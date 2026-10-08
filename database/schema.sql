@@ -35,7 +35,7 @@ CREATE TABLE dbo.AppUsers (
     PasswordHash NVARCHAR(255) NOT NULL,
     FullName NVARCHAR(100) NOT NULL,
     Email VARCHAR(100) NULL,
-    Role VARCHAR(20) NOT NULL CONSTRAINT CK_AppUsers_Role CHECK (Role IN ('Admin', 'Host', 'Staff')),
+    Role VARCHAR(20) NOT NULL CONSTRAINT CK_AppUsers_Role CHECK (Role IN ('Admin', 'Host', 'Staff', 'Customer')),
     IsActive BIT NOT NULL CONSTRAINT DF_AppUsers_IsActive DEFAULT (1),
     CreatedAt DATETIME2(0) NOT NULL CONSTRAINT DF_AppUsers_CreatedAt DEFAULT (SYSUTCDATETIME())
 );
@@ -169,11 +169,12 @@ GO
 -- 8. THÊM DỮ LIỆU KHỞI TẠO (SEED DATA) CHO HOMESTAY HUẾ
 -- ==========================================================================================
 
--- 8.1. Tài khoản Host / Admin mặc định (Pass test: Admin@123 / Host@123)
+-- 8.1. Tài khoản Phân Quyền Hệ Thống (Admin, Lễ Tân / Nhân Viên, Khách Hàng)
 INSERT INTO dbo.AppUsers (Username, PasswordHash, FullName, Email, Role)
 VALUES 
-('admin', 'AQAAAAEAACcQAAAAEPvR3...hash...', N'Quản Trị Viên Homestay Huế', 'host@homestayhue.vn', 'Admin'),
-('reception', 'AQAAAAEAACcQAAAAEPvR3...hash...', N'Lễ Tân Homestay', 'letan@homestayhue.vn', 'Staff');
+('admin', '123456', N'Quản Trị Viên Homestay Huế', 'admin@homestayhue.vn', 'Admin'),
+('letan', '123456', N'Lễ Tân Homestay Huế (Nhân Viên)', 'letan@homestayhue.vn', 'Staff'),
+('khachhang', '123456', N'Nguyễn Văn An (Khách Hàng)', 'an.nguyen@gmail.com', 'Customer');
 
 -- 8.2. Khách hàng mẫu
 INSERT INTO dbo.Guests (FullName, PhoneNumber, Email, IdentityCard)

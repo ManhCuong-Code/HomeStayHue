@@ -41,7 +41,11 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
         options.SlidingExpiration = true;
     });
 
-builder.Services.AddAuthorization();
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("StaffOnly", policy => policy.RequireRole("Admin", "Administrator", "Staff"));
+    options.AddPolicy("CustomerOnly", policy => policy.RequireRole("Customer"));
+});
 builder.Services.AddCascadingAuthenticationState();
 
 // 3. PLUGINS (PART 3 & PART 5)
@@ -55,6 +59,7 @@ builder.Services.AddScoped<IProductRepository, HomeStayHue.DataStore.SQL.Dapper.
 builder.Services.AddScoped<IRoomRepository, HomeStayHue.DataStore.SQL.Dapper.ProductRepository>();
 builder.Services.AddScoped<IOrderRepository, HomeStayHue.DataStore.SQL.Dapper.OrderRepository>();
 builder.Services.AddScoped<IBookingRepository, HomeStayHue.DataStore.SQL.Dapper.OrderRepository>();
+builder.Services.AddScoped<IUserRepository, HomeStayHue.DataStore.SQL.Dapper.UserRepository>();
 
 // 4. CORE SERVICES & USE CASES (PART 1, 2, 3, 4)
 builder.Services.AddTransient<IOrderService, OrderService>();
@@ -98,21 +103,62 @@ app.MapStaticAssets();
 
 // 6. MINIMAL API ENDPOINTS FOR AUTHENTICATION (PART 4)
 // Xử lý Login truyền thống bằng HTTP POST để phát hành Cookie trình duyệt
-app.MapPost("/authenticate", async (HttpContext context) =>
+app.MapPost("/authenticate", async (HttpContext context, IUserRepository userRepo) =>
 {
     var form = await context.Request.ReadFormAsync();
     string username = form["username"].ToString().Trim();
     string password = form["password"].ToString().Trim();
 
-    // Xác thực tài khoản Admin mẫu: admin / 123456
-    if (username.Equals("admin", StringComparison.OrdinalIgnoreCase) && password == "123456")
+    AppUser? user = null;
+    try
+    {
+        user = await userRepo.AuthenticateAsync(username, password);
+    }
+    catch
+    {
+        // Khi không kết nối được CSDL, fallback sang tài khoản mẫu
+    }
+
+    if (user == null)
+    {
+        if (username.Equals("admin", StringComparison.OrdinalIgnoreCase) && password == "123456")
+        {
+            user = new AppUser { Username = "admin", FullName = "Quản Trị Viên Homestay Huế", Role = "Admin" };
+        }
+        else if ((username.Equals("letan", StringComparison.OrdinalIgnoreCase) || username.Equals("staff", StringComparison.OrdinalIgnoreCase)) && password == "123456")
+        {
+            user = new AppUser { Username = "letan", FullName = "Lễ Tân Homestay Huế (Nhân Viên)", Role = "Staff" };
+        }
+        else if (username.Equals("khachhang", StringComparison.OrdinalIgnoreCase) && password == "123456")
+        {
+            user = new AppUser { Username = "khachhang", FullName = "Nguyễn Văn An (Khách Hàng)", Role = "Customer" };
+        }
+    }
+
+    if (user != null)
     {
         var claims = new List<Claim>
         {
-            new Claim(ClaimTypes.Name, username),
-            new Claim(ClaimTypes.Role, "Administrator"),
-            new Claim("Department", "Management")
+            new Claim(ClaimTypes.Name, user.FullName),
+            new Claim(ClaimTypes.NameIdentifier, user.Username),
+            new Claim(ClaimTypes.Role, user.Role),
+            new Claim("UserRole", user.Role)
         };
+
+        if (user.Role.Equals("Admin", StringComparison.OrdinalIgnoreCase))
+        {
+            claims.Add(new Claim(ClaimTypes.Role, "Staff"));
+            claims.Add(new Claim(ClaimTypes.Role, "Administrator"));
+            claims.Add(new Claim("Department", "Ban Quản Lý"));
+        }
+        else if (user.Role.Equals("Staff", StringComparison.OrdinalIgnoreCase))
+        {
+            claims.Add(new Claim("Department", "Bộ Phận Tiếp Tân & Kiểm Tra"));
+        }
+        else
+        {
+            claims.Add(new Claim("Department", "Khách Hàng"));
+        }
 
         var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
         var principal = new ClaimsPrincipal(claimsIdentity);
@@ -123,7 +169,16 @@ app.MapPost("/authenticate", async (HttpContext context) =>
             ExpiresUtc = DateTimeOffset.UtcNow.AddHours(8)
         });
 
-        context.Response.Redirect("/admin");
+        // Nhân viên và Admin bắt buộc vào Admin Portal để kiểm tra
+        if (user.Role.Equals("Admin", StringComparison.OrdinalIgnoreCase) || user.Role.Equals("Staff", StringComparison.OrdinalIgnoreCase) || user.Role.Equals("Administrator", StringComparison.OrdinalIgnoreCase))
+        {
+            context.Response.Redirect("/admin");
+        }
+        else
+        {
+            // Khách hàng trở về trang đặt phòng
+            context.Response.Redirect("/");
+        }
         return;
     }
 

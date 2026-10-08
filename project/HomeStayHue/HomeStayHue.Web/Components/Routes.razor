@@ -1,4 +1,4 @@
-﻿<Router AppAssembly="typeof(Program).Assembly"
+<Router AppAssembly="typeof(Program).Assembly"
         AdditionalAssemblies="new[]
                                 {
                                     typeof(HomeStayHue.Web.CustomerPortal.Pages.ViewProductComponent).Assembly,
@@ -8,11 +8,15 @@
         <AuthorizeRouteView RouteData="routeData" DefaultLayout="typeof(Layout.MainLayout)">
             <NotAuthorized>
                 <div class="container p-5 text-center">
-                    <div class="alert alert-danger shadow-sm">
-                        <h4 class="alert-heading"><i class="bi bi-shield-lock-fill me-2"></i>Truy Cập Bị Từ Chối!</h4>
-                        <p>Bạn không có quyền truy cập vào khu vực này hoặc phiên đăng nhập đã hết hạn.</p>
+                    <div class="alert alert-warning shadow-sm border border-warning">
+                        <h4 class="alert-heading text-dark fw-bold"><i class="bi bi-shield-lock-fill me-2 text-danger"></i>Khu Vực Quản Trị Hệ Thống Dành Riêng Cho Nhân Viên</h4>
+                        <p class="mb-2">Khách hàng có thể tự do xem danh sách buồng phòng và đặt phòng trực tuyến <strong>mà không cần đăng nhập</strong>.</p>
+                        <p class="text-muted small">Để truy cập phân hệ kiểm tra đơn đặt phòng và buồng phòng, <strong>Nhân viên</strong> hoặc <strong>Quản trị viên</strong> cần phải đăng nhập tài khoản hệ thống.</p>
                         <hr />
-                        <a href="login" class="btn btn-primary fw-bold px-4">Đăng Nhập Ngay</a>
+                        <div class="d-flex justify-content-center gap-2">
+                            <a href="login" class="btn btn-primary fw-bold px-4"><i class="bi bi-shield-lock me-1"></i>Đăng Nhập Nhân Viên</a>
+                            <a href="/" class="btn btn-outline-success px-4"><i class="bi bi-house-door me-1"></i>Về Trang Đặt Phòng (Khách)</a>
+                        </div>
                     </div>
                 </div>
             </NotAuthorized>

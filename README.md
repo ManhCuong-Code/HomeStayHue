@@ -338,7 +338,25 @@ flowchart TD
 
 ---
 
-## 🗄️ 5. CƠ SỞ DỮ LIỆU SQL SERVER (CHUẨN 3NF)
+## 🔐 5. CẤU TRÚC XÁC THỰC & PHÂN QUYỀN (AUTHENTICATION & AUTHORIZATION)
+
+Hệ thống được thiết kế theo mô hình phân quyền chặt chẽ đáp ứng tiêu chí **K4.1 & K4.2** trong barem đánh giá:
+
+| Đối Tượng Người Dùng | Yêu Cầu Đăng Nhập | Quyền Hạn & Chức Năng Trên Hệ Thống |
+|---|---|---|
+| **Khách Hàng Vãng Lai (Guest)** | ❌ **Không cần đăng nhập** | Tự do tìm kiếm buồng phòng, xem chi tiết phòng, chọn phòng vào giỏ và hoàn tất đặt cọc trực tuyến chỉ với việc nhập thông tin liên lạc (Họ tên, SĐT, Email). |
+| **Khách Hàng Thành Viên (Customer)** | 💡 **Tùy chọn đăng nhập** | Đăng nhập tài khoản (`khachhang` / `123456`) để tự động điền sẵn thông tin khi đặt phòng và lưu vết lịch sử giao dịch cá nhân. |
+| **Nhân Viên Tiếp Tân (Staff / Receptionist)** | 🔒 **BẮT BUỘC đăng nhập** | Truy cập phân hệ `/admin` (`[Authorize(Roles = "Staff,Admin")]`) để **kiểm tra danh sách đơn đặt phòng**, duyệt cọc, kiểm tra bảng trạng thái buồng phòng (Sẵn sàng / Đang có khách / Dọn phòng). |
+| **Quản Trị Viên (Admin / Host)** | 🔒 **BẮT BUỘC đăng nhập** | Toàn quyền kiểm tra, cấu hình bảng giá `RatePlans`, duyệt đơn và quản lý toàn bộ hệ thống. |
+
+### Danh Sách Tài Khoản Thử Nghiệm Hệ Thống (Mật khẩu chung: `123456`)
+* 🛡️ **Nhân viên / Lễ tân:** Username: `letan` | Role: `Staff` *(Dành riêng cho nhân viên đăng nhập để kiểm tra hệ thống)*
+* 👑 **Quản trị viên:** Username: `admin` | Role: `Admin` *(Toàn quyền quản trị)*
+* 👤 **Khách hàng thân thiết:** Username: `khachhang` | Role: `Customer` *(Tài khoản khách hàng tùy chọn)*
+
+---
+
+## 🗄️ 6. CƠ SỞ DỮ LIỆU SQL SERVER (CHUẨN 3NF)
 
 Kịch bản CSDL lưu tại: [database/schema.sql](database/schema.sql)
 
@@ -403,7 +421,7 @@ erDiagram
 
 ---
 
-## 🚀 6. HƯỚNG DẪN KHỞI CHẠY DỰ ÁN
+## 🚀 7. HƯỚNG DẪN KHỞI CHẠY DỰ ÁN
 
 ### Yêu Cầu Môi Trường
 * **.NET SDK:** 10.0 trở lên

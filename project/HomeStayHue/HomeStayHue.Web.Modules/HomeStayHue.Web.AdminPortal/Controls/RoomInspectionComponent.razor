@@ -1,0 +1,102 @@
+@using HomeStayHue.CoreBusiness.Models
+
+<div class="card shadow-sm border-0 my-3">
+    <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
+        <h5 class="mb-0"><i class="bi bi-door-open-fill me-2 text-warning"></i>Bảng Kiểm Tra Trạng Thái Buồng Phòng (Staff Room Inspection)</h5>
+        <span class="badge bg-warning text-dark"><i class="bi bi-shield-lock-fill me-1"></i>Chế Độ Nhân Viên Kiểm Tra</span>
+    </div>
+    <div class="card-body">
+        <div class="row g-3">
+            @foreach (var room in rooms)
+            {
+                <div class="col-md-4">
+                    <div class="card h-100 border @GetBorderClass(room.Status) shadow-sm">
+                        <div class="card-header d-flex justify-content-between align-items-center @GetHeaderBg(room.Status)">
+                            <span class="fw-bold fs-5">Phòng @room.RoomNumber</span>
+                            <span class="badge @GetBadgeClass(room.Status)">@GetStatusText(room.Status)</span>
+                        </div>
+                        <div class="card-body">
+                            <h6 class="card-subtitle mb-2 text-muted">@room.TypeName</h6>
+                            <p class="small text-secondary mb-2">@room.Notes</p>
+                            <p class="mb-1"><strong>Sức chứa:</strong> @room.Capacity khách</p>
+                            <p class="mb-3"><strong>Giá niêm yết:</strong> @room.Price.ToString("N0") đ/đêm</p>
+
+                            <div class="btn-group w-100" role="group">
+                                <button type="button" class="btn btn-sm btn-outline-success @(room.Status == "AVAILABLE" ? "active" : "")" 
+                                        @onclick='() => ChangeStatus(room, "AVAILABLE")'>
+                                    Sẵn Sàng
+                                </button>
+                                <button type="button" class="btn btn-sm btn-outline-primary @(room.Status == "OCCUPIED" ? "active" : "")" 
+                                        @onclick='() => ChangeStatus(room, "OCCUPIED")'>
+                                    Có Khách
+                                </button>
+                                <button type="button" class="btn btn-sm btn-outline-warning @(room.Status == "CLEANING" ? "active" : "")" 
+                                        @onclick='() => ChangeStatus(room, "CLEANING")'>
+                                    Dọn Phòng
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@code {
+    public class RoomItem
+    {
+        public string RoomNumber { get; set; } = string.Empty;
+        public string TypeName { get; set; } = string.Empty;
+        public int Capacity { get; set; }
+        public decimal Price { get; set; }
+        public string Status { get; set; } = "AVAILABLE"; // AVAILABLE, OCCUPIED, CLEANING
+        public string Notes { get; set; } = string.Empty;
+    }
+
+    private List<RoomItem> rooms = new List<RoomItem>
+    {
+        new RoomItem { RoomNumber = "HH-101", TypeName = "Phòng Nhà Rường Cổ Điển", Capacity = 2, Price = 700000, Status = "AVAILABLE", Notes = "Không gian gỗ mít Cố Đô, bồn tắm ngâm sỏi" },
+        new RoomItem { RoomNumber = "HH-102", TypeName = "Phòng Nhà Rường Cổ Điển", Capacity = 2, Price = 700000, Status = "OCCUPIED", Notes = "Khách đang lưu trú (Đoàn anh An)" },
+        new RoomItem { RoomNumber = "HH-201", TypeName = "Phòng Gác Mái Sông Hương", Capacity = 3, Price = 900000, Status = "AVAILABLE", Notes = "View hoàng hôn sông Hương, máy pha cà phê" },
+        new RoomItem { RoomNumber = "HH-202", TypeName = "Phòng Gác Mái Sông Hương", Capacity = 3, Price = 900000, Status = "CLEANING", Notes = "Khách vừa check-out lúc 12h, đang thay drap giường" },
+        new RoomItem { RoomNumber = "HH-301", TypeName = "Villa Gia Đình Hương Giang", Capacity = 6, Price = 1800000, Status = "AVAILABLE", Notes = "Biệt thự riêng, bếp nấu & sân BBQ ngoài trời" }
+    };
+
+    private void ChangeStatus(RoomItem room, string newStatus)
+    {
+        room.Status = newStatus;
+    }
+
+    private string GetStatusText(string status) => status switch
+    {
+        "AVAILABLE" => "Trống (Sẵn Sàng)",
+        "OCCUPIED" => "Đang Có Khách",
+        "CLEANING" => "Đang Dọn Buồng",
+        _ => status
+    };
+
+    private string GetBadgeClass(string status) => status switch
+    {
+        "AVAILABLE" => "bg-success",
+        "OCCUPIED" => "bg-primary",
+        "CLEANING" => "bg-warning text-dark",
+        _ => "bg-secondary"
+    };
+
+    private string GetBorderClass(string status) => status switch
+    {
+        "AVAILABLE" => "border-success",
+        "OCCUPIED" => "border-primary",
+        "CLEANING" => "border-warning",
+        _ => ""
+    };
+
+    private string GetHeaderBg(string status) => status switch
+    {
+        "AVAILABLE" => "bg-success-subtle text-success",
+        "OCCUPIED" => "bg-primary-subtle text-primary",
+        "CLEANING" => "bg-warning-subtle text-dark",
+        _ => "bg-light"
+    };
+}
