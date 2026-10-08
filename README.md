@@ -1,4 +1,4 @@
-# 🌿 HỆ THỐNG ĐẶT PHÒNG TRỰC TUYẾN HOMESTAY HUẾ (NHÀ VƯỜN KIM LONG)
+# 🌿 HỆ THỐNG ĐẶT PHÒNG TRỰC TUYẾN HOMESTAY HUẾ
 
 ---
 
@@ -9,7 +9,7 @@
 * **Ngành đào tạo:** **Tin học kinh tế**
 * **Khoa:** **Hệ thống thông tin kinh tế**
 * **Học phần:** **Lập trình ứng dụng Web**
-* **Tên đề tài:** **Nền tảng đặt phòng trực tuyến Homestay Huế (Mô hình Homestay Nhà Vườn sinh thái Kim Long)**
+* **Tên đề tài:** **Nền tảng đặt phòng trực tuyến Homestay Huế (Hệ thống Quản lý & Đặt phòng Homestay Cố Đô Huế)**
 * **Repository GitHub:** [https://github.com/ManhCuong-Code/HomeStayHue](https://github.com/ManhCuong-Code/HomeStayHue)
 
 ---
@@ -17,13 +17,13 @@
 ## 📖 1. TỔNG QUAN ĐỀ TÀI
 
 ### 1.1. Bối cảnh & Vấn đề thực tế
-Kim Long (TP. Huế) nổi tiếng với hệ thống nhà vườn di sản truyền thống và không gian xanh ven bờ sông Hương. Hiện nay, đa số các chủ homestay nhà vườn tại Huế đều phụ thuộc hoàn toàn vào các sàn đại lý du lịch trực tuyến (OTA) như Booking.com hay Agoda, dẫn tới nhiều bất cập:
+Cố Đô Huế là điểm đến du lịch văn hóa, di sản hàng đầu với mô hình lưu trú homestay ngày càng phát triển mạnh mẽ. Hiện nay, đa số các chủ cơ sở homestay tại Huế đều phụ thuộc hoàn toàn vào các sàn đại lý du lịch trực tuyến (OTA) như Booking.com hay Agoda, dẫn tới nhiều bất cập:
 * **Chi phí hoa hồng cao:** Bị cắt phế từ **15% đến 25%** tổng doanh thu mỗi tháng.
 * **Giam giữ dòng tiền:** Tiền phòng bị sàn trung gian giữ từ 15 đến 30 ngày mới giải ngân.
 * **Mất dữ liệu khách hàng:** Không có thông tin liên hệ trực tiếp để tư vấn và chăm sóc khách quen.
 
 ### 1.2. Mục tiêu dự án
-Xây dựng một nền tảng Web đặt phòng độc lập giúp chủ nhà vườn Kim Long:
+Xây dựng một nền tảng Web đặt phòng trực tuyến độc lập giúp các cơ sở Homestay Huế:
 1. **Tự chủ kinh doanh:** Giữ trọn 100% doanh thu, tiền cọc 50% thanh toán trực tiếp qua mã **VietQR** vào tài khoản ngân hàng.
 2. **Kiểm soát buồng phòng tuyệt đối:** Loại bỏ 100% rủi ro trùng phòng (Overbooking) nhờ thuật toán quản lý theo từng đêm lưu trú (`NightDate`).
 3. **Chính sách giá & hủy cọc linh hoạt:** Áp dụng giá theo ngày trong tuần (Dynamic Pricing) và luật hủy phòng trước 48 giờ minh bạch.
@@ -237,7 +237,7 @@ sequenceDiagram
 
     User->>UI: Điền thông tin (Họ tên, SĐT) & Nhấn "Xác Nhận Đặt Phòng"
     UI->>Cart: Lấy thông tin phòng & ngày lưu trú đã chọn
-    Cart-->>UI: Trả về: Phòng NR-101, Check-in: 15/10, Check-out: 17/10 (2 đêm)
+    Cart-->>UI: Trả về: Phòng HH-101, Check-in: 15/10, Check-out: 17/10 (2 đêm)
 
     UI->>UC: Execute(bookingOrder)
     

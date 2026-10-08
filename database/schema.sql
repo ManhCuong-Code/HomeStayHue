@@ -1,9 +1,6 @@
--- ==========================================================================================
--- HỆ THỐNG CƠ SỞ DỮ LIỆU: HOMESTAY HUẾ (NHÀ VƯỜN KIM LONG)
--- DỰ ÁN CAPSTONE ECO2415 - CHUẨN ĐÁNH GIÁ BAREM (K2.1, K2.2, K2.3)
--- Chuẩn hóa: 3NF (Third Normal Form) | Cặp Header-Line: Bookings - BookingNights
+-- HỆ THỐNG CƠ SỞ DỮ LIỆU: HOMESTAY HUẾ (HỆ THỐNG ĐẶT PHÒNG TRỰC TUYẾN)
+-- CHUẨN ĐÁNH GIÁ (K2.1, K2.2, K2.3) | CHUẨN HÓA: 3NF | HEADER-LINE: Bookings - BookingNights
 -- Hệ Quản Trị CSDL: Microsoft SQL Server 2019 / 2022 / Azure SQL
--- ==========================================================================================
 
 USE master;
 GO
@@ -175,7 +172,7 @@ GO
 -- 8.1. Tài khoản Host / Admin mặc định (Pass test: Admin@123 / Host@123)
 INSERT INTO dbo.AppUsers (Username, PasswordHash, FullName, Email, Role)
 VALUES 
-('admin', 'AQAAAAEAACcQAAAAEPvR3...hash...', N'Chủ Nhà Vườn Kim Long', 'host@homestayhue.vn', 'Admin'),
+('admin', 'AQAAAAEAACcQAAAAEPvR3...hash...', N'Quản Trị Viên Homestay Huế', 'host@homestayhue.vn', 'Admin'),
 ('reception', 'AQAAAAEAACcQAAAAEPvR3...hash...', N'Lễ Tân Homestay', 'letan@homestayhue.vn', 'Staff');
 
 -- 8.2. Khách hàng mẫu
@@ -188,18 +185,18 @@ VALUES
 -- 8.3. Danh mục Loại phòng đặc trưng Huế
 INSERT INTO dbo.RoomTypes (TypeName, Description, MaxGuests, BasePrice, Amenities, ImageUrl)
 VALUES 
-(N'Phòng Nhà Rường Cổ Điển', N'Không gian gỗ mít truyền thống Huế, view sân vườn hoa sen Kim Long thanh tịnh.', 2, 700000, N'Điều hòa, Trà Cung Đình, Bồn tắm ngâm sỏi, Wifi', '/images/rooms/nha-ruong.jpg'),
+(N'Phòng Nhà Rường Cổ Điển', N'Không gian gỗ mít truyền thống Huế, view sân vườn hoa Cố Đô thanh tịnh.', 2, 700000, N'Điều hòa, Trà Cung Đình, Bồn tắm ngâm sỏi, Wifi', '/images/rooms/nha-ruong.jpg'),
 (N'Phòng Gác Mái Sông Hương', N'Thiết kế gác lửng thoáng đãng, ngắm hoàng hôn ngã ba Tuần và bờ sông Hương.', 3, 900000, N'Điều hòa, Ban công view sông, Máy pha cà phê, Smart TV', '/images/rooms/gac-mai.jpg'),
 (N'Villa Gia Đình Hương Giang', N'Biệt thự mini biệt lập dành cho gia đình hoặc nhóm bạn, có bếp nấu và sân BBQ ngoài trời.', 6, 1800000, N'Bếp đầy đủ tiện nghi, Sân BBQ riêng, 2 phòng tắm, Máy giặt', '/images/rooms/villa-huong-giang.jpg');
 
 -- 8.4. Danh mục Phòng cụ thể
 INSERT INTO dbo.Rooms (RoomNumber, RoomTypeId, Status)
 VALUES 
-('NR-101', 1, 'AVAILABLE'),
-('NR-102', 1, 'AVAILABLE'),
-('GM-201', 2, 'AVAILABLE'),
-('GM-202', 2, 'AVAILABLE'),
-('VL-301', 3, 'AVAILABLE');
+('HH-101', 1, 'AVAILABLE'),
+('HH-102', 1, 'AVAILABLE'),
+('HH-201', 2, 'AVAILABLE'),
+('HH-202', 2, 'AVAILABLE'),
+('HH-301', 3, 'AVAILABLE');
 
 -- 8.5. Thiết lập Bảng giá theo ngày trong tuần (RatePlan: Thứ 2-Thứ 5 ngày thường, Thứ 6-CN cuối tuần)
 -- Loại 1: Nhà Rường (Base: 700k, Cuối tuần: 850k)
@@ -236,7 +233,7 @@ VALUES
 (3, 6, 2200000, 1, 0);
 
 -- 8.6. Mẫu Giao dịch Đặt phòng Header - LineItem (Đáp ứng Tiêu chí K2.2)
--- Đơn #BK20261015-01: Khách Nguyễn Văn An đặt phòng NR-101 (2 đêm: 15/10 và 16/10/2026)
+-- Đơn #BK20261015-01: Khách Nguyễn Văn An đặt phòng HH-101 (2 đêm: 15/10 và 16/10/2026)
 INSERT INTO dbo.Bookings (BookingCode, GuestId, CheckInDate, CheckOutDate, TotalGuests, TotalAmount, DepositAmount, Status, Notes)
 VALUES ('BK20261015-01', 1, '2026-10-15', '2026-10-17', 2, 1550000, 775000, 'CONFIRMED', N'Khách đến lúc 15h00');
 

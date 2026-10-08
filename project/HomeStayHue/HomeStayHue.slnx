@@ -1,2 +1,16 @@
 <Solution>
+  <Folder Name="/HomeStayHue.Web.Modules/">
+    <Project Path="HomeStayHue.Web.Modules/HomeStayHue.Web.AdminPortal/HomeStayHue.Web.AdminPortal.csproj" Id="d3445dab-20cc-4089-bca4-dd5f52498eca" />
+    <Project Path="HomeStayHue.Web.Modules/HomeStayHue.Web.Common/HomeStayHue.Web.Common.csproj" Id="2875f293-a0b4-4fb9-a0fd-c1a2503a4a1d" />
+    <Project Path="HomeStayHue.Web.Modules/HomeStayHue.Web.CustomerPortal/HomeStayHue.Web.CustomerPortal.csproj" Id="b4333f71-66e3-415e-a99c-18977b96c225" />
+  </Folder>
+  <Folder Name="/Plugins/">
+    <Project Path="Plugins/HomeStayHue.DataStore.HandCoded/HomeStayHue.DataStore.HandCoded.csproj" />
+    <Project Path="Plugins/HomeStayHue.DataStore.SQL.Dapper/HomeStayHue.DataStore.SQL.Dapper.csproj" />
+    <Project Path="Plugins/HomeStayHue.ShoppingCart.LocalStorage/HomeStayHue.ShoppingCart.LocalStorage.csproj" Id="b6f90c05-a01e-4409-a0ea-1772e9ddd36d" />
+    <Project Path="Plugins/HomeStayHue.StateStore.DI/HomeStayHue.StateStore.DI.csproj" Id="38650a86-c055-469e-80db-3d06847a06cb" />
+  </Folder>
+  <Project Path="HomeStayHue.CoreBusiness/HomeStayHue.CoreBusiness.csproj" />
+  <Project Path="HomeStayHue.UseCases/HomeStayHue.UseCases.csproj" />
+  <Project Path="HomeStayHue.Web/HomeStayHue.Web.csproj" />
 </Solution>
