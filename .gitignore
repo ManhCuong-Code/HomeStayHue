@@ -17,3 +17,15 @@ project/eShop/
 ## OS Files
 .DS_Store
 Thumbs.db
+
+## Tai lieu, bao cao va trinh chieu (Chi giu Code va Co so du lieu tren Git)
+*.docx
+*.doc
+*.pdf
+*.png
+index.html
+script.js
+style.css
+sync_and_render.ps1
+sync_bangchamcong/
+diagrams/
