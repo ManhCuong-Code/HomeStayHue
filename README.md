@@ -220,7 +220,7 @@ classDiagram
 
 ---
 
-### 3.3. Sơ Đồ Tuần Tự Luồng Giao Dịch Chính (Sequence Diagram - End to End Booking)
+### 3.3. Sơ Đồ Tuần Tự Luồng Giao Dịch Đặt Phòng (Sequence Diagram - End to End Booking)
 
 Minh họa quy trình đặt phòng, kiểm tra 2 luật nghiệp vụ và lưu giao dịch Header - LineItem trong **cùng 1 Transaction**:
 
@@ -269,7 +269,129 @@ sequenceDiagram
 
 ---
 
-### 3.4. Sơ Đồ Chuyển Trạng Thái Đơn Đặt & Buồng Phòng (State Machine Diagram)
+### 3.4. Sơ Đồ Tuần Tự Xác Thực & Phân Quyền (Sequence Diagram - Authentication & RBAC Authorization)
+
+Minh họa cơ chế phân quyền chặt chẽ: Khách vãng lai tự do đặt phòng không cần tài khoản, còn Nhân viên / Quản trị bắt buộc đăng nhập để truy cập `/admin`:
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor User as Người Dùng (Khách / Nhân Viên)
+    participant UI as Login / TopNavbar (Blazor)
+    participant AuthEP as Minimal API (/authenticate)
+    participant UserRepo as UserRepository (Dapper)
+    participant DB as SQL Server (HomeStayHueDB)
+    participant Cookie as CookieAuthenticationHandler
+    participant AdminUI as AdminPortal ([Authorize])
+
+    alt Luồng 1: Khách vãng lai truy cập đặt phòng
+        User->>UI: Truy cập "/" hoặc "/products"
+        UI-->>User: Cho phép tự do xem phòng & đặt phòng (Không yêu cầu đăng nhập)
+    else Luồng 2: Nhân viên đăng nhập để kiểm tra hệ thống
+        User->>UI: Nhập tài khoản "letan" / "123456" tại "/login"
+        UI->>AuthEP: POST /authenticate (Username, Password)
+        AuthEP->>UserRepo: AuthenticateAsync("letan", "123456")
+        UserRepo->>DB: SELECT * FROM dbo.AppUsers WHERE Username='letan' AND IsActive=1
+        DB-->>UserRepo: Trả về thông tin: FullName="Lễ Tân Homestay", Role="Staff"
+        UserRepo-->>AuthEP: Trả về AppUser Entity
+        AuthEP->>Cookie: SignInAsync (Claims: Name="Lễ Tân", Role="Staff")
+        Cookie-->>UI: Cấp phát Cookie "HomeStayHue.Auth.Cookie"
+        AuthEP-->>UI: Redirect 302 -> "/admin"
+        UI->>AdminUI: Điều hướng vào "/admin"
+        AdminUI-->>User: Mở giao diện Quản Trị: Kiểm tra Đơn & Buồng phòng thành công!
+    else Luồng 3: Khách vãng lai hoặc tài khoản không có quyền cố truy cập "/admin"
+        User->>AdminUI: Truy cập trực tiếp URL "/admin"
+        AdminUI->>Cookie: Kiểm tra quyền hạn (Require Role: Staff/Admin)
+        Cookie-->>AdminUI: Từ chối (Chưa đăng nhập hoặc không đủ quyền)
+        AdminUI-->>User: Kích hoạt AuthorizeRouteView -> Hiển thị cảnh báo & Yêu cầu đăng nhập Nhân viên
+    end
+```
+
+---
+
+### 3.5. Sơ Đồ Tuần Tự Nhân Viên Kiểm Tra & Duyệt Đơn Đặt Phòng (Sequence Diagram - Staff Order Processing & Room Inspection)
+
+Minh họa thao tác của nhân viên lễ tân khi đăng nhập hệ thống để kiểm tra đơn đặt phòng và bảng trạng thái buồng phòng:
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor Staff as Nhân Viên Tiếp Tân (Staff)
+    participant AdminPage as AdminPortal.razor
+    participant Outstanding as OutstandingOrdersComponent
+    participant UC_View as ViewOutstandingOrdersUseCase
+    participant UC_Process as ProcessOrderUseCase
+    participant OrderRepo as OrderRepository (Dapper)
+    participant DB as SQL Server (HomeStayHueDB)
+    participant RoomTab as RoomInspectionComponent
+
+    Staff->>AdminPage: Mở phân hệ Quản Trị (/admin)
+    AdminPage->>Outstanding: Kích hoạt Tab "Đơn Chờ Xử Lý"
+    Outstanding->>UC_View: Execute()
+    UC_View->>OrderRepo: GetOrders(processed = false)
+    OrderRepo->>DB: SELECT * FROM Orders WHERE DateProcessed IS NULL
+    DB-->>OrderRepo: Danh sách đơn đặt phòng mới của khách
+    OrderRepo-->>UC_View: Trả về List<Order>
+    UC_View-->>Outstanding: Hiển thị bảng đơn hàng & thông tin cọc 50%
+    
+    Staff->>Outstanding: Nhấn "Duyệt Đơn" (Order #102)
+    Outstanding->>UC_Process: Execute(orderId = 102)
+    UC_Process->>OrderRepo: ProcessOrder(orderId = 102)
+    OrderRepo->>DB: UPDATE Orders SET DateProcessed = GETDATE() WHERE OrderId = 102
+    DB-->>OrderRepo: Xác nhận cập nhật (1 row affected)
+    OrderRepo-->>UC_Process: Hoàn tất xử lý
+    UC_Process-->>Outstanding: Thông báo duyệt đơn thành công
+    Outstanding-->>Staff: Cập nhật danh sách đơn (Đơn chuyển sang Đã Xử Lý)
+
+    Staff->>AdminPage: Chuyển sang Tab "Kiểm Tra Buồng Phòng"
+    AdminPage->>RoomTab: Tải dữ liệu 5 buồng phòng (HH-101 đến HH-301)
+    RoomTab-->>Staff: Hiển thị trạng thái buồng: Sẵn Sàng / Đang Có Khách / Đang Dọn
+    Staff->>RoomTab: Cập nhật phòng HH-101 -> "Đang Có Khách (Check-in)"
+    RoomTab-->>Staff: Lưu trạng thái phòng thành công
+```
+
+---
+
+### 3.6. Sơ Đồ Tuần Tự Hủy Phòng & Tính Phí Phạt 48H (Sequence Diagram - Cancellation & 48H Penalty Calculation)
+
+Minh họa thuật toán tự động tính phí phạt hủy phòng theo Luật Nghiệp Vụ 2:
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor Guest as Khách Hàng (Guest)
+    actor Staff as Nhân Viên / Lễ Tân
+    participant System as BookingService (Core Business)
+    participant DB as SQL Server (HomeStayHueDB)
+
+    Guest->>Staff: Yêu cầu hủy đơn đặt phòng #BK20261015-01
+    Staff->>System: ProcessCancellation(BookingId, RequestTime)
+    System->>DB: Lấy thông tin đơn đặt & danh sách đêm (BookingNights)
+    DB-->>System: CheckInDate = 15/10 14h00, Đêm 1: 700.000đ, Đã cọc: 775.000đ
+    
+    Note over System: Kiểm tra Luật Nghiệp Vụ 2 (Chính sách 48 Giờ)
+    System->>System: Thời gian còn lại = CheckInDate - RequestTime
+    
+    alt Hủy trước giờ Check-in >= 48 giờ (Đúng hạn)
+        System->>System: Phạt = 0đ | Hoàn lại = 100% Tiền cọc (775.000đ)
+        System->>DB: UPDATE Bookings SET Status = 'CANCELLED', CancellationFee = 0
+        System->>DB: Xóa giữ chỗ trong BookingNights (Giải phóng phòng)
+        DB-->>System: Xác nhận cập nhật thành công
+        System-->>Staff: Thông báo: Hủy hợp lệ, hoàn trả khách 775.000đ
+    else Hủy trước giờ Check-in < 48 giờ (Hủy gấp)
+        System->>System: Phạt = Giá 1 đêm đầu tiên (700.000đ)
+        System->>System: Hoàn lại = Tiền cọc - Phí phạt = 775.000đ - 700.000đ = 75.000đ
+        System->>DB: UPDATE Bookings SET Status = 'CANCELLED', CancellationFee = 700000
+        System->>DB: Xóa giữ chỗ trong BookingNights (Giải phóng phòng đón khách mới)
+        DB-->>System: Xác nhận cập nhật thành công
+        System-->>Staff: Thông báo: Phạt 700.000đ bù lỗ phòng trống, hoàn lại 75.000đ cho khách
+    end
+    Staff-->>Guest: Gửi thông báo kết quả xử lý hủy phòng
+```
+
+---
+
+### 3.7. Sơ Đồ Chuyển Trạng Thái Đơn Đặt & Buồng Phòng (State Machine Diagram)
 
 ```mermaid
 stateDiagram-v2
@@ -294,7 +416,7 @@ stateDiagram-v2
 
 ---
 
-### 3.5. Sơ Đồ Hoạt Động (Activity Diagram)
+### 3.8. Sơ Đồ Hoạt Động Quy Trình Đặt Phòng (Activity Diagram)
 
 ```mermaid
 flowchart TD
@@ -318,6 +440,148 @@ flowchart TD
     ConfirmBooking --> ReceptionCheckIn[Lễ tân đón tiếp lúc 14h00 Check-in]
     ReceptionCheckIn --> ReceptionCheckOut[Lễ tân trả phòng lúc 12h00 Check-out & chuyển dọn phòng]
     ReceptionCheckOut --> End([Kết thúc chu trình lưu trú])
+```
+
+---
+
+### 3.9. Sơ Đồ Triển Khai Hệ Thống (Deployment Diagram)
+
+```mermaid
+flowchart TB
+    subgraph ClientDevice["1. Thiết Bị Người Dùng (Client Tier)"]
+        Browser["Trình Duyệt Web (Chrome / Edge / Safari / Mobile)<br>• Blazor Web App (Interactive Server Mode)<br>• Kết nối thời gian thực SignalR WebSocket<br>• Lưu trữ LocalStorage giỏ phòng"]
+    end
+
+    subgraph AppServer["2. Máy Chủ Ứng Dụng (Application Tier - Kestrel Server)"]
+        subgraph WebHost["HomeStayHue.Web (.NET 10 LTS)"]
+            AuthMiddleware["Cookie Authentication & Authorization Middleware"]
+            SignalRHub["Blazor Server Circuit Hub"]
+            MinimalAPI["Minimal API Endpoints: /authenticate, /logout"]
+        end
+        subgraph LogicLayers["Tầng Nghiệp Vụ & Dữ Liệu"]
+            UseCasesModule["HomeStayHue.UseCases"]
+            CoreModule["HomeStayHue.CoreBusiness"]
+            DapperPlugin["Dapper Micro-ORM Plugin"]
+        end
+    end
+
+    subgraph DBServer["3. Máy Chủ Cơ Sở Dữ Liệu (Database Tier)"]
+        SQLServer[("Microsoft SQL Server 2022 / SQLEXPRESS<br>• CSDL: HomeStayHueDB (Chuẩn 3NF)<br>• Kết nối TCP/IP Port 1433<br>• Bảo toàn giao dịch ACID")]
+    end
+
+    subgraph ExternalServices["4. Dịch Vụ Thanh Toán Bên Ngoài (External Gateway)"]
+        VietQRAPI["Hệ Thống Thanh Toán Ngân Hàng VietQR Gateway<br>(Sinh mã QR chuyển khoản tiền cọc 50%)"]
+    end
+
+    Browser <-->|WebSocket / HTTPS: 7082| WebHost
+    WebHost --> LogicLayers
+    DapperPlugin <-->|ADO.NET / SqlClient Connection String| SQLServer
+    Browser -.->|Quét mã thanh toán trực tiếp| VietQRAPI
+```
+
+---
+
+### 3.10. Sơ Đồ Thành Phần Kiến Trúc Phần Mềm (Component Diagram - Clean Architecture)
+
+```mermaid
+flowchart TD
+    subgraph Presentation["Tầng Giao Diện (Presentation Layer)"]
+        Web["HomeStayHue.Web (Host Project)"]
+        CustomerPortal["HomeStayHue.Web.CustomerPortal<br>(Tìm phòng, Chi tiết phòng, Đặt phòng vãng lai)"]
+        AdminPortal["HomeStayHue.Web.AdminPortal<br>(Kiểm tra đơn, Duyệt cọc, Bảng buồng phòng)"]
+        Common["HomeStayHue.Web.Common<br>(Layout, Controls dùng chung)"]
+    end
+
+    subgraph AppUseCases["Tầng Ứng Dụng (Use Cases Layer)"]
+        UC["HomeStayHue.UseCases<br>• SearchRoomUseCase, PlaceBookingUseCase<br>• ViewOutstandingOrdersUseCase, ProcessOrderUseCase"]
+        Interfaces["Plugin Interfaces<br>• IRoomRepository, IBookingRepository<br>• IOrderRepository, IUserRepository"]
+    end
+
+    subgraph Domain["Tầng Cốt Lõi (Core Business Layer)"]
+        Entities["Domain Models<br>• Room, RoomType, RatePlan<br>• Booking, BookingNight, Guest, AppUser"]
+        DomainServices["Domain Services & Rules<br>• BookingService (Luật 1: Chống Overbooking)<br>• OrderService (Luật 2: Tính tiền & Phạt 48h)"]
+    end
+
+    subgraph Infrastructure["Tầng Hạ Tầng & Tiện Ích (Plugins Layer)"]
+        DapperRepo["HomeStayHue.DataStore.SQL.Dapper<br>(Truy xuất CSDL SQL Server với 1 Transaction)"]
+        LocalStorage["HomeStayHue.ShoppingCart.LocalStorage"]
+        StateStore["HomeStayHue.StateStore.DI"]
+        HandCoded["HomeStayHue.DataStore.HandCoded"]
+    end
+
+    Web --> CustomerPortal
+    Web --> AdminPortal
+    Web --> Common
+    CustomerPortal --> UC
+    AdminPortal --> UC
+
+    UC --> Domain
+    UC --> Interfaces
+
+    DapperRepo ..|> Interfaces
+    LocalStorage ..|> Interfaces
+    StateStore ..|> Interfaces
+    HandCoded ..|> Interfaces
+
+    DapperRepo --> Domain
+```
+
+---
+
+### 3.11. Sơ Đồ Phân Quyền Chi Tiết Theo Vai Trò (Role-Based Access Control Use Case Diagram)
+
+```mermaid
+flowchart LR
+    subgraph Actors["Các Tác Nhân"]
+        GuestUser(("Khách Hàng Vãng Lai<br>(Không Cần Đăng Nhập)"))
+        MemberUser(("Khách Thành Viên<br>(Customer)"))
+        StaffUser(("Nhân Viên Lễ Tân<br>(Staff)"))
+        AdminUser(("Quản Trị Viên<br>(Admin)"))
+    end
+
+    subgraph PublicFeatures["Chức Năng Công Khai (Khách Tự Do)"]
+        F1["Tìm kiếm phòng theo ngày Check-in/out"]
+        F2["Xem ảnh, giá & tiện ích buồng phòng"]
+        F3["Đặt phòng nhanh & Nhận mã QR cọc 50%"]
+    end
+
+    subgraph MemberFeatures["Chức Năng Thành Viên"]
+        F4["Đăng nhập tài khoản khách hàng"]
+        F5["Tự động điền thông tin khi đặt phòng"]
+    end
+
+    subgraph StaffFeatures["Chức Năng Nhân Viên (Bắt Buộc Đăng Nhập)"]
+        F6["Đăng nhập hệ thống quản trị (/login)"]
+        F7["Kiểm tra danh sách đơn đặt phòng mới"]
+        F8["Kiểm tra & duyệt thanh toán cọc"]
+        F9["Kiểm tra bảng trạng thái buồng phòng"]
+        F10["Thực hiện thủ tục Check-in / Check-out"]
+    end
+
+    subgraph AdminFeatures["Chức Năng Quản Trị Cấp Cao"]
+        F11["Cấu hình bảng giá linh hoạt theo thứ (RatePlans)"]
+        F12["Quản lý phân quyền tài khoản người dùng"]
+    end
+
+    GuestUser --> F1
+    GuestUser --> F2
+    GuestUser --> F3
+
+    MemberUser --> F1
+    MemberUser --> F2
+    MemberUser --> F3
+    MemberUser --> F4
+    MemberUser --> F5
+
+    StaffUser --> F6
+    StaffUser --> F7
+    StaffUser --> F8
+    StaffUser --> F9
+    StaffUser --> F10
+
+    AdminUser --> StaffFeatures
+    AdminUser --> F11
+    AdminUser --> F12
 ```
 
 ---
