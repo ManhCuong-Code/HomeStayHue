@@ -1,0 +1,115 @@
+@page "/orderconfirm/{UniqueId}"
+@rendermode InteractiveServer
+
+@using HomeStayHue.CoreBusiness.Models
+@using HomeStayHue.UseCases.OrderConfirmationScreen
+@inject IOrderConfirmationUseCase orderConfirmationUseCase
+
+<PageTitle>Xác Nhận Đơn Hàng - HomeStayHue</PageTitle>
+
+<div class="container my-5">
+    @if (order != null)
+    {
+        <div class="card shadow-lg border-0 rounded-4 overflow-hidden">
+            <div class="card-header bg-success text-white text-center py-4">
+                <i class="bi bi-check-circle-fill display-4 mb-2"></i>
+                <h3 class="fw-bold mb-1">Đặt Hàng Thành Công!</h3>
+                <p class="mb-0 text-white-50">Cảm ơn bạn đã mua sắm tại HomeStayHue. Đơn hàng của bạn đang được xử lý.</p>
+            </div>
+            <div class="card-body p-4 p-md-5">
+                <div class="alert alert-light border border-success border-2 rounded-3 text-center py-3 mb-4">
+                    <span class="text-muted d-block small text-uppercase fw-semibold">Mã Xác Nhận Đơn Hàng Của Bạn</span>
+                    <strong class="fs-4 text-success font-monospace">@order.UniqueId</strong>
+                </div>
+
+                <div class="row g-4 mb-4">
+                    <div class="col-md-6">
+                        <div class="p-3 bg-light rounded-3 h-100">
+                            <h6 class="fw-bold text-primary mb-3"><i class="bi bi-person-fill me-2"></i>Thông Tin Khách Hàng</h6>
+                            <p class="mb-1"><strong>Họ & Tên:</strong> @order.CustomerName</p>
+                            <p class="mb-1"><strong>Địa Chỉ:</strong> @order.CustomerAddress</p>
+                            <p class="mb-0"><strong>Khu Vực:</strong> @order.CustomerCity, @order.CustomerStateProvince, @order.CustomerCountry</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="p-3 bg-light rounded-3 h-100">
+                            <h6 class="fw-bold text-primary mb-3"><i class="bi bi-info-circle-fill me-2"></i>Thông Tin Đơn Hàng</h6>
+                            <p class="mb-1"><strong>Mã Đơn:</strong> #@order.OrderID</p>
+                            <p class="mb-1"><strong>Thời Gian Đặt:</strong> @order.DatePlaced?.ToString("dd/MM/yyyy HH:mm:ss")</p>
+                            <p class="mb-0"><strong>Trạng Thái:</strong> <span class="badge bg-warning text-dark">Chờ Xử Lý</span></p>
+                        </div>
+                    </div>
+                </div>
+
+                <h6 class="fw-bold text-dark mb-3"><i class="bi bi-basket-fill me-2"></i>Chi Tiết Mặt Hàng</h6>
+                <div class="table-responsive mb-4">
+                    <table class="table table-bordered align-middle">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Sản Phẩm</th>
+                                <th>Hình Ảnh</th>
+                                <th class="text-center">Số Lượng</th>
+                                <th class="text-end">Đơn Giá</th>
+                                <th class="text-end">Thành Tiền</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (order.LineItems != null)
+                            {
+                                @foreach (var item in order.LineItems)
+                                {
+                                    <tr>
+                                        <td>@(item.Product?.Name ?? $"Sản phẩm #{item.ProductId}")</td>
+                                        <td>
+                                            @if (!string.IsNullOrEmpty(item.Product?.ImageLink))
+                                            {
+                                                <img src="@item.Product.ImageLink" style="max-height: 40px; object-fit: contain;" />
+                                            }
+                                        </td>
+                                        <td class="text-center">@item.Quantity</td>
+                                        <td class="text-end">@item.Price.ToString("C")</td>
+                                        <td class="text-end">@((item.Price * item.Quantity).ToString("C"))</td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                        <tfoot>
+                            <tr class="fw-bold fs-5">
+                                <td colspan="4" class="text-end">Tổng Cộng Thanh Toán:</td>
+                                <td class="text-end text-danger">@order.TotalPrice.ToString("C")</td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+
+                <div class="text-center">
+                    <a href="/products" class="btn btn-primary btn-lg px-5 fw-bold">
+                        <i class="bi bi-arrow-left me-2"></i>Tiếp Tục Mua Sắm
+                    </a>
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="text-center py-5">
+            <div class="spinner-border text-primary mb-3" role="status"></div>
+            <p class="lead text-muted">Đang tải thông tin xác nhận đơn hàng...</p>
+        </div>
+    }
+</div>
+
+@code {
+    [Parameter]
+    public string? UniqueId { get; set; }
+
+    private Order? order;
+
+    protected override void OnParametersSet()
+    {
+        if (!string.IsNullOrEmpty(UniqueId))
+        {
+            order = orderConfirmationUseCase.Execute(UniqueId);
+        }
+    }
+}

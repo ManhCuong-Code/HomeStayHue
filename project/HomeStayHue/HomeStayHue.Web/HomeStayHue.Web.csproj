@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <BlazorDisableThrowNavigationException>true</BlazorDisableThrowNavigationException>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\HomeStayHue.CoreBusiness\HomeStayHue.CoreBusiness.csproj" />
+    <ProjectReference Include="..\HomeStayHue.UseCases\HomeStayHue.UseCases.csproj" />
+    <ProjectReference Include="..\HomeStayHue.Web.Modules\HomeStayHue.Web.CustomerPortal\HomeStayHue.Web.CustomerPortal.csproj" />
+    <ProjectReference Include="..\HomeStayHue.Web.Modules\HomeStayHue.Web.AdminPortal\HomeStayHue.Web.AdminPortal.csproj" />
+    <ProjectReference Include="..\Plugins\HomeStayHue.DataStore.HandCoded\HomeStayHue.DataStore.HandCoded.csproj" />
+    <ProjectReference Include="..\Plugins\HomeStayHue.DataStore.SQL.Dapper\HomeStayHue.DataStore.SQL.Dapper.csproj" />
+    <ProjectReference Include="..\Plugins\HomeStayHue.ShoppingCart.LocalStorage\HomeStayHue.ShoppingCart.LocalStorage.csproj" />
+    <ProjectReference Include="..\Plugins\HomeStayHue.StateStore.DI\HomeStayHue.StateStore.DI.csproj" />
+  </ItemGroup>
+
+</Project>

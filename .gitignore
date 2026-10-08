@@ -1,0 +1,19 @@
+## .NET & Visual Studio
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
+.vs/
+.vscode/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+## Backup & Temp
+project/eShop_backup/
+project/eShop/
+
+## OS Files
+.DS_Store
+Thumbs.db

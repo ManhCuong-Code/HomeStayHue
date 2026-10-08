@@ -1,0 +1,16 @@
+<div class="card m-2 p-2 shadow-sm" style="width: 13rem;">
+    <img src="@product?.ImageLink" class="card-img-top" alt="@product?.Name" style="height: 180px; object-fit: contain;" />
+    <div class="card-body d-flex flex-column">
+        <h6 class="card-title text-truncate" title="@product?.Name">
+            <NavLink href=@($"/product/{product?.ProductId}")>@product?.Name</NavLink>
+        </h6>
+        <p class="card-text fw-bold text-danger mt-auto">
+            @product?.Price.ToString("c")
+        </p>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public Product? product { get; set; }
+}

@@ -1,0 +1,73 @@
+@page "/room/{id:int}"
+@rendermode InteractiveServer
+@using HomeStayHue.CoreBusiness.Models
+@using HomeStayHue.UseCases.ViewProductSrceen.Interfaces
+@inject IViewProductUseCase ViewProductUseCase
+@inject IAddProductToCartUseCase AddProductToCartUseCase
+@inject NavigationManager NavigationManager
+
+<PageTitle>Chi Tiết Buồng Phòng — Homestay Huế</PageTitle>
+
+@if (product != null)
+{
+    <div class="container py-4">
+        <nav aria-label="breadcrumb" class="mb-3">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/" class="text-success text-decoration-none">Trang Chủ</a></li>
+                <li class="breadcrumb-item"><a href="/search" class="text-success text-decoration-none">Phòng Nghỉ</a></li>
+                <li class="breadcrumb-item active">@product.Name</li>
+            </ol>
+        </nav>
+
+        <div class="row g-4">
+            <div class="col-md-6">
+                <img src="@product.ImageLink" class="img-fluid rounded-4 shadow" alt="@product.Name" style="width: 100%; max-height: 420px; object-fit: cover;" />
+            </div>
+            <div class="col-md-6 d-flex flex-column">
+                <span class="badge bg-success bg-opacity-25 text-success w-auto align-self-start mb-2 px-3 py-2">
+                    🏡 Không Gian Nhà Vườn Cố Đô
+                </span>
+                <h2 class="fw-bold text-dark">@product.Name</h2>
+                <h3 class="text-danger fw-bold my-3">@product.Price.ToString("N0") VNĐ <small class="text-muted fs-6">/ đêm</small></h3>
+                <p class="text-secondary fs-5 flex-grow-1">@product.Description</p>
+
+                <div class="p-3 bg-light rounded-3 mb-4 border">
+                    <div class="small text-muted">✨ Tiện ích: Điều hòa, Trà Cung Đình đón tiếp, Wifi, Sân vườn hoa sen Kim Long.</div>
+                    <div class="small text-muted mt-1">📅 Nhận phòng: 14:00 | Trả phòng: 12:00 (Luật 1 chống trùng phòng)</div>
+                </div>
+
+                <button class="btn btn-success btn-lg fw-bold shadow-sm py-3" @onclick="AddToCart">
+                    📅 Thêm Vào Giỏ & Tiến Hành Đặt Phòng
+                </button>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <div class="text-center py-5">
+        <div class="spinner-border text-success" role="status"></div>
+        <p class="mt-2 text-muted">Đang tải thông tin buồng phòng...</p>
+    </div>
+}
+
+@code {
+    [Parameter]
+    public int id { get; set; }
+
+    private Product? product;
+
+    protected override void OnParametersSet()
+    {
+        product = ViewProductUseCase.Execute(id);
+    }
+
+    private void AddToCart()
+    {
+        if (product != null)
+        {
+            AddProductToCartUseCase.Execute(product.productId);
+            NavigationManager.NavigateTo("/cart");
+        }
+    }
+}

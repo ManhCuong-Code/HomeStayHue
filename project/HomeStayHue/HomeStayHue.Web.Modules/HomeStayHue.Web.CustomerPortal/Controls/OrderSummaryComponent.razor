@@ -1,0 +1,75 @@
+@inject NavigationManager navigationManager
+
+<div class="card shadow-sm" style="width: 24rem;">
+    <div class="card-body">
+        <h5 class="card-title fw-bold mb-3">Order Summary</h5>
+        <div class="card-text d-flex justify-content-between mb-2">
+            <div>
+                Items (@itemsCount):
+            </div>
+            <div>
+                @itemsTotalPrice.ToString("c")
+            </div>
+        </div>
+        <div class="card-text d-flex justify-content-between mb-2">
+            <div>
+                Shipping And Handling:
+            </div>
+            <div>
+                <span>$0.00</span>
+            </div>
+        </div>
+        <div class="card-text d-flex justify-content-between mb-2">
+            <div>
+                Estimated Tax:
+            </div>
+            <div>
+                <span>$0.00</span>
+            </div>
+        </div>
+        <hr />
+        <div class="card-text d-flex justify-content-between text-danger fs-5 fw-bold mb-3">
+            <div>
+                <b>Order Total:</b>
+            </div>
+            <div>
+                <b>@itemsTotalPrice.ToString("c")</b>
+            </div>
+        </div>
+        @if (!HidePlaceOrderButton) {
+            <button class="btn btn-primary w-100 py-2 fw-semibold" @onclick="PlaceOrder">Place your order</button>
+        }
+    </div>
+</div>
+
+@code {
+    private int itemsCount = 0;
+    private double itemsTotalPrice = 0;
+
+    [Parameter]
+    public Order? Order { get; set; }
+
+    [Parameter]
+    public bool HidePlaceOrderButton { get; set; } = false;
+
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+
+        if (Order != null && Order.LineItems != null && Order.LineItems.Count > 0)
+        {
+            itemsCount = Order.LineItems.Sum(x => x.Quantity);
+            itemsTotalPrice = Order.LineItems.Sum(x => x.Price * x.Quantity);
+        }
+        else
+        {
+            itemsCount = 0;
+            itemsTotalPrice = 0;
+        }
+    }
+
+    private void PlaceOrder()
+    {
+        navigationManager.NavigateTo("/placeorder");
+    }
+}

@@ -1,0 +1,535 @@
+<html xmlns:o='urn:schemas-microsoft-com:office:office'
+      xmlns:w='urn:schemas-microsoft-com:office:word'
+      xmlns='http://www.w3.org/TR/REC-html40'>
+<head>
+<meta charset="utf-8">
+<title>BÁO CÁO THIẾT KẾ HỆ THỐNG UML - DỰ ÁN HOMESTAY HUẾ</title>
+<!--[if gte mso 9]>
+<xml>
+ <w:WordDocument>
+  <w:View>Print</w:View>
+  <w:Zoom>100</w:Zoom>
+  <w:DoNotOptimizeForBrowser/>
+ </w:WordDocument>
+</xml>
+<![endif]-->
+<style>
+  @page Section1 {
+    size: 21.0cm 29.7cm;
+    margin: 2.0cm 2.0cm 2.0cm 2.5cm;
+    mso-header-margin: 1.0cm;
+    mso-footer-margin: 1.0cm;
+    mso-paper-source: 0;
+  }
+  div.Section1 { page: Section1; }
+  body {
+    font-family: 'Times New Roman', serif;
+    font-size: 13pt;
+    line-height: 1.4;
+    color: #111827;
+  }
+  .cover {
+    text-align: center;
+    border: 3px double #1e3a8a;
+    padding: 35px 25px;
+    margin-bottom: 30px;
+  }
+  .cover-school { font-size: 13pt; font-weight: bold; text-transform: uppercase; color: #1e3a8a; margin-bottom: 6px; }
+  .cover-dept { font-size: 12pt; font-weight: bold; text-transform: uppercase; color: #4b5563; margin-bottom: 45px; }
+  .cover-badge { font-size: 14pt; font-weight: bold; color: #b45309; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 15px; }
+  .cover-title { font-size: 21pt; font-weight: bold; color: #1e3a8a; line-height: 1.3; text-transform: uppercase; margin-bottom: 18px; }
+  .cover-subtitle { font-size: 13.5pt; font-style: italic; color: #374151; margin-bottom: 50px; }
+  .cover-meta { text-align: left; margin: 0 auto; width: 85%; font-size: 12.5pt; line-height: 1.8; }
+  .cover-footer { text-align: center; margin-top: 50px; font-weight: bold; font-size: 12pt; color: #4b5563; }
+  
+  h1 { font-size: 15.5pt; font-weight: bold; color: #1e3a8a; text-transform: uppercase; margin-top: 24px; margin-bottom: 12px; border-bottom: 2px solid #1e3a8a; padding-bottom: 4px; }
+  h2 { font-size: 13.5pt; font-weight: bold; color: #1d4ed8; margin-top: 18px; margin-bottom: 8px; }
+  h3 { font-size: 12.5pt; font-weight: bold; color: #1f2937; margin-top: 14px; margin-bottom: 6px; }
+  
+  p, li { text-align: justify; margin-bottom: 6px; }
+  ul, ol { margin-top: 4px; margin-bottom: 10px; padding-left: 24px; }
+  
+  table { border-collapse: collapse; width: 100%; margin: 12px 0 16px 0; font-size: 11pt; }
+  th { background-color: #1e3a8a; color: #ffffff; padding: 7px 9px; font-weight: bold; border: 1px solid #1e3a8a; text-align: left; }
+  td { border: 1px solid #cbd5e1; padding: 6px 9px; vertical-align: top; }
+  tr:nth-child(even) { background-color: #f8fafc; }
+  
+  .img-box {
+    text-align: center;
+    margin: 16px 0 18px 0;
+  }
+  .img-box img {
+    border: 1px solid #94a3b8;
+    max-width: 100%;
+    height: auto;
+  }
+  .img-caption {
+    font-size: 10.5pt;
+    font-style: italic;
+    color: #4b5563;
+    display: block;
+    margin-top: 6px;
+    font-weight: 500;
+  }
+  
+  .code-box {
+    font-family: 'Consolas', monospace;
+    font-size: 9pt;
+    line-height: 1.35;
+    background-color: #f1f5f9;
+    border: 1px solid #94a3b8;
+    border-left: 4px solid #1d4ed8;
+    padding: 10px;
+    margin: 10px 0 14px 0;
+    white-space: pre-wrap;
+    word-break: break-all;
+  }
+  
+  .note-box {
+    background-color: #eff6ff;
+    border: 1px solid #bfdbfe;
+    border-left: 4px solid #2563eb;
+    padding: 9px 12px;
+    margin: 9px 0;
+    font-size: 12pt;
+  }
+  
+  .page-break { page-break-before: always; }
+</style>
+</head>
+<body>
+<div class="Section1">
+
+  <!-- ================= BÌA BÁO CÁO ================= -->
+  <div class="cover">
+    <div class="cover-school">BỘ GIÁO DỤC VÀ ĐÀO TẠO — TRƯỜNG ĐẠI HỌC KHOA HỌC</div>
+    <div class="cover-dept">KHOA CÔNG NGHỆ THÔNG TIN</div>
+    <div style="height: 30px;"></div>
+    
+    <div class="cover-badge">ĐỒ ÁN CAPSTONE — HỌC PHẦN ECO2415</div>
+    <div class="cover-title">BÁO CÁO THIẾT KẾ HỆ THỐNG UML & KIẾN TRÚC CLEAN ARCHITECTURE</div>
+    <div class="cover-subtitle">DỰ ÁN: NỀN TẢNG ĐẶT PHÒNG HOMESTAY HUẾ<br>(MÔ HÌNH NHÀ VƯỜN SINH THÁI KIM LONG)</div>
+    
+    <div style="height: 35px;"></div>
+    <div class="cover-meta">
+      <table style="border:none; width:100%; margin:0;">
+        <tr style="background:transparent;"><td style="border:none; width:38%; font-weight:bold;">Giảng viên hướng dẫn:</td><td style="border:none;">Hội đồng Chấm thi Capstone ECO2415</td></tr>
+        <tr style="background:transparent;"><td style="border:none; font-weight:bold;">Dự án thực hiện:</td><td style="border:none;">Homestay Huế — Homestay Booking Platform</td></tr>
+        <tr style="background:transparent;"><td style="border:none; font-weight:bold;">Kiến trúc & Công nghệ:</td><td style="border:none;">.NET 10 LTS, Blazor Web App, Clean Architecture 4 tầng, Dapper SQL Server, Microsoft.Extensions.AI</td></tr>
+        <tr style="background:transparent;"><td style="border:none; font-weight:bold;">Thời gian hoàn thành:</td><td style="border:none;">Năm học 2025 – 2026</td></tr>
+      </table>
+    </div>
+    
+    <div class="cover-footer">THÀNH PHỐ HUẾ — 2026</div>
+  </div>
+
+  <div class="page-break"></div>
+
+  <!-- ================= 1. TỔNG QUAN & ESHOP ================= -->
+  <h1>1. TỔNG QUAN DỰ ÁN VÀ BẢNG ÁNH XẠ THIẾT KẾ ESHOP</h1>
+  <h3>1.1. Bối cảnh bài toán thực tế</h3>
+  <p>Vùng đất Kim Long (TP. Huế) nổi tiếng với hệ thống nhà vườn truyền thống và homestay sinh thái xanh mát ven sông Hương. Tuy nhiên, hiện nay phần lớn các chủ nhà vườn đều phải phụ thuộc hoàn toàn vào các sàn đại lý du lịch trực tuyến (OTA) như Booking.com hay Agoda. Việc này phát sinh nhiều bất cập lớn:</p>
+  <ul>
+    <li><b>Chi phí hoa hồng quá cao:</b> Chủ nhà phải nộp từ 15% đến 25% tổng doanh thu cho sàn môi giới. Ví dụ với doanh thu 100 triệu VNĐ/tháng, homestay bị cắt mất 15 – 25 triệu VNĐ.</li>
+    <li><b>Giam dòng tiền:</b> Tiền khách thanh toán bị sàn giam từ 15 đến 30 ngày mới giải ngân về tài khoản.</li>
+    <li><b>Mất dữ liệu khách hàng:</b> Chủ nhà không có trước thông tin liên lạc (SĐT/Zalo) để chăm sóc và tư vấn tiếp đón chu đáo.</li>
+  </ul>
+  <p><b>Mục tiêu của Dự án:</b> Xây dựng một nền tảng web đặt phòng độc lập theo mô hình Clean Architecture 4 tầng chuẩn eShop (qua 35 video bài giảng). Giúp chủ homestay bảo toàn 100% doanh thu, tiền cọc 50% thanh toán trực tiếp qua mã VietQR về tài khoản ngân hàng, giải quyết triệt để vấn đề Overbooking và hỗ trợ trợ lý AI SmartPaste bóc tách tin nhắn đặt phòng từ Zalo trong 1 giây.</p>
+
+  <h3>1.2. Bảng ánh xạ thiết kế eShop sang Dự án Homestay Huế</h3>
+  <table>
+    <thead>
+      <tr>
+        <th style="width: 25%;">Khái niệm eShop gốc</th>
+        <th style="width: 35%;">Ánh xạ sang Dự án Homestay Huế</th>
+        <th style="width: 40%;">Ý nghĩa nghiệp vụ cụ thể</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><b>Product</b> (Sản phẩm)</td>
+        <td><b>RoomType</b> (Loại phòng)</td>
+        <td>Bungalow Sân Vườn, Nhà Rường Cổ, Deluxe View Sông Hương.</td>
+      </tr>
+      <tr>
+        <td><b>Giỏ hàng</b> (Shopping Cart)</td>
+        <td><b>SelectedRoom & Khoảng ngày</b> (BookingCartState)</td>
+        <td>Lựa chọn tạm thời phòng muốn ở kèm ngày nhận (CheckIn) và ngày trả (CheckOut). Dùng Scoped Service (K1.4).</td>
+      </tr>
+      <tr>
+        <td><b>Order</b> (Đơn hàng Header)</td>
+        <td><b>Booking</b> (Đơn đặt phòng)</td>
+        <td>Bảng Header lưu mã đơn #BK01, thông tin khách, ngày ở, tổng tiền, tiền cọc 50%, trạng thái (K2.1).</td>
+      </tr>
+      <tr>
+        <td><b>OrderLineItem</b> (Dòng đơn)</td>
+        <td><b>BookingNight</b> (Từng đêm lưu trú)</td>
+        <td>Bảng LineItem lưu riêng từng đêm khách ở và đơn giá áp dụng của đêm đó để chống trùng phòng và tính giá linh hoạt (K2.1).</td>
+      </tr>
+      <tr>
+        <td><b>Admin xử lý đơn</b></td>
+        <td><b>Check-in (14h00) & Check-out (12h00)</b></td>
+        <td>Quy trình lễ tân đón tiếp khách và chuyển giao trạng thái dọn dẹp buồng phòng.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="page-break"></div>
+
+  <!-- ================= 2. BẢNG ĐỐI CHIẾU TIÊU CHÍ BAREM ================= -->
+  <h1>2. BẢNG ĐỐI CHIẾU TIÊU CHÍ CHẤM THI CAPSTONE (MỤC 12 BAREM)</h1>
+  <table>
+    <thead>
+      <tr>
+        <th style="width: 10%;">Mã KT</th>
+        <th style="width: 38%;">Tiêu chí kiểm tra theo Barem</th>
+        <th style="width: 12%;">Điểm tối đa</th>
+        <th style="width: 40%;">Minh chứng trên Sơ đồ UML & Kiến trúc</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><b>K1.1</b></td>
+        <td>Đủ 4 project; CoreBusiness không tham chiếu project nào; UseCases chỉ tham chiếu CoreBusiness.</td>
+        <td style="text-align:center;"><b>8đ</b></td>
+        <td><b>Class Diagram:</b> Phân rã chuẩn 4 package: CoreBusiness, UseCases, Plugins.DataStore.SQL, WebApp.</td>
+      </tr>
+      <tr>
+        <td><b>K1.2</b></td>
+        <td>Interface repository nằm ở UseCases, Plugin cài đặt; .razor chỉ inject interface.</td>
+        <td style="text-align:center;"><b>7đ</b></td>
+        <td><b>Class & Sequence 1:</b> IRoomRepository, IBookingRepository nằm trong UseCases; CheckoutBookingPage chỉ @inject ICreateBookingUseCase.</td>
+      </tr>
+      <tr>
+        <td><b>K1.3</b></td>
+        <td>2 luật nghiệp vụ của đề cài trong CoreBusiness / UseCases, không nằm trong .razor.</td>
+        <td style="text-align:center;"><b>6đ</b></td>
+        <td><b>Class & Sequence:</b> OverbookingRule và PricingAndCancellationRule nằm trong CoreBusiness.</td>
+      </tr>
+      <tr>
+        <td><b>K1.4</b></td>
+        <td>DI đăng ký đủ; giỏ/lựa chọn tạm dùng Scoped.</td>
+        <td style="text-align:center;"><b>4đ</b></td>
+        <td><b>Class & Sequence 1:</b> BookingCartState là Scoped service lưu phòng và ngày lưu trú đã chọn.</td>
+      </tr>
+      <tr>
+        <td><b>K2.1</b></td>
+        <td>Từ 5 bảng, 3NF, có khóa ngoại; ít nhất 1 cặp Header–Line.</td>
+        <td style="text-align:center;"><b>8đ</b></td>
+        <td><b>Class Diagram:</b> 6 thực thể (RoomType, Room, RatePlan, Guest, Booking, BookingNight) với cặp Booking–BookingNight.</td>
+      </tr>
+      <tr>
+        <td><b>K2.2</b></td>
+        <td>Cặp Header–Line ghi trong 1 Transaction.</td>
+        <td style="text-align:center;"><b>6đ</b></td>
+        <td><b>Sequence 1:</b> SqlBookingRepository gọi BeginTransaction(), INSERT Booking và BookingNight trong cùng 1 Transaction.</td>
+      </tr>
+      <tr>
+        <td><b>K2.3</b></td>
+        <td>Mọi truy vấn tham số hóa, không nối chuỗi SQL.</td>
+        <td style="text-align:center;"><b>5đ</b></td>
+        <td><b>Sequence 1:</b> Sử dụng tham số @RoomId, @CheckIn, @CheckOut qua Dapper.</td>
+      </tr>
+      <tr>
+        <td><b>K2.4</b></td>
+        <td>Luồng giao dịch chính chạy end-to-end trên SQL Server.</td>
+        <td style="text-align:center;"><b>6đ</b></td>
+        <td><b>Sequence 1:</b> Luồng đặt phòng hoàn chỉnh xuyên suốt từ giao diện khách đến SQL Server.</td>
+      </tr>
+      <tr>
+        <td><b>K3.1</b></td>
+        <td>Ít nhất 3 component tái sử dụng có [Parameter] / EventCallback.</td>
+        <td style="text-align:center;"><b>6đ</b></td>
+        <td><b>Class Diagram:</b> SmartPasteModalComponent, RoomCardComponent, PriceBadgeComponent.</td>
+      </tr>
+      <tr>
+        <td><b>K3.2</b></td>
+        <td>EditForm + DataAnnotations; lỗi hiển thị cạnh ô nhập.</td>
+        <td style="text-align:center;"><b>5đ</b></td>
+        <td><b>Sequence 1 & 2:</b> Form đặt phòng xác thực hợp lệ thông tin khách hàng.</td>
+      </tr>
+      <tr>
+        <td><b>K3.3</b></td>
+        <td>Ca vi phạm 2 luật nghiệp vụ báo lỗi thân thiện, không văng lỗi.</td>
+        <td style="text-align:center;"><b>4đ</b></td>
+        <td><b>Activity Diagram:</b> Bắt lỗi OverbookingConflictException và hiển thị cảnh báo thân thiện.</td>
+      </tr>
+      <tr>
+        <td><b>K4.1, K4.2</b></td>
+        <td>Đăng nhập 2 vai trò; chặn tài khoản thường gõ URL quản trị.</td>
+        <td style="text-align:center;"><b>9đ</b></td>
+        <td><b>Use Case Diagram:</b> Phân quyền Khách hàng vs Host/Admin với [Authorize(Roles = "Admin")].</td>
+      </tr>
+      <tr>
+        <td><b>K4.3</b></td>
+        <td>Mở rộng AI: đạt đủ mục 10 (IChatClient trong UseCase riêng).</td>
+        <td style="text-align:center;"><b>6đ</b></td>
+        <td><b>Sequence 2:</b> ExtractBookingFromMessageUseCase inject IChatClient; AI chỉ gợi ý, lễ tân duyệt trước khi lưu.</td>
+      </tr>
+      <tr>
+        <td><b>K5.1</b></td>
+        <td>Use Case, Class, Sequence khớp tên lớp và luồng trong code.</td>
+        <td style="text-align:center;"><b>6đ</b></td>
+        <td>Toàn bộ các sơ đồ PlantUML khớp 100% với tên lớp và phương thức cài đặt.</td>
+      </tr>
+      <tr>
+        <td><b>K5.2</b></td>
+        <td>Vấn đáp: chỉ đúng dòng cài luật và giải thích Dependency Rule.</td>
+        <td style="text-align:center;"><b>6đ</b></td>
+        <td>Mục 9 trong tài liệu hướng dẫn chi tiết trả lời vấn đáp.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="page-break"></div>
+
+  <!-- ================= 3. ĐẶC TẢ 2 LUẬT NGHIỆP VỤ BẮT BUỘC ================= -->
+  <h1>3. ĐẶC TẢ HAI LUẬT NGHIỆP VỤ BẮT BUỘC (MỤC 7 BAREM)</h1>
+
+  <h3>3.1. Luật 1: Một phòng không bị đặt chồng ngày (Overbooking Prevention - K1.3)</h3>
+  <div class="note-box">
+    <b>Nội dung luật:</b> Một phòng cụ thể không được phép có hai khách lưu trú trùng nhau trong bất kỳ đêm nào. Tuy nhiên, hệ thống cho phép khách cũ trả phòng ngày <i>D</i> (lúc 12h00) và khách mới nhận phòng ngày <i>D</i> (lúc 14h00) hoàn toàn hợp lệ vì có khoảng thời gian dọn phòng 12h00 – 14h00.
+  </div>
+  <p><b>Ví dụ bằng số thực tế:</b></p>
+  <ul>
+    <li>Khách A đặt phòng Bungalow B1 từ ngày <b>15/10 đến 18/10</b> (Khách A trả phòng lúc 12:00 trưa ngày 18/10).</li>
+    <li>Khách B muốn đặt phòng Bungalow B1 từ ngày <b>18/10 đến 21/10</b> (Khách B nhận phòng lúc 14:00 chiều ngày 18/10).</li>
+    <li><b>Kết quả hệ thống:</b> CHẤP THUẬN vì khoảng thời gian 12:00 – 14:00 là thời gian buồng phòng dọn dẹp, hai khách không ở chung đêm nào.</li>
+    <li>Nếu Khách C muốn đặt từ <b>17/10 đến 19/10</b>: BỊ CHẶN VÀ BÁO LỖI vì đêm 17/10 đã thuộc quyền lưu trú của Khách A.</li>
+  </ul>
+  <p><b>Câu lệnh SQL tham số hóa kiểm tra phòng trống (Dapper - K2.3):</b></p>
+  <div class="code-box">SELECT r.* FROM Room r
+WHERE r.RoomTypeId = @RoomTypeId AND r.IsActive = 1
+  AND r.Id NOT IN (
+    SELECT DISTINCT bn.RoomId FROM BookingNight bn
+    JOIN Booking b ON bn.BookingId = b.Id
+    WHERE b.Status NOT IN ('Cancelled', 'CheckedOut')
+      AND (bn.NightDate >= @CheckIn AND bn.NightDate &lt; @CheckOut)
+  );</div>
+
+  <h3>3.2. Luật 2: Tự động tính tiền từng đêm & Chính sách hủy phòng trước 48 giờ (K1.3)</h3>
+  <div class="note-box">
+    <b>Nội dung luật:</b> Tổng tiền phòng = &Sigma; giá từng đêm lưu trú theo bảng giá RatePlan (ngày thường vs cuối tuần). Khi hủy đặt phòng: nếu hủy trước thời điểm check-in &ge; 48 giờ thì hoàn lại 100% tiền cọc; nếu hủy dưới 48 giờ thì giữ lại số tiền cọc tương đương 1 đêm đầu tiên làm phí phạt.
+  </div>
+  <p><b>Ví dụ bằng số thực tế:</b></p>
+  <ul>
+    <li>Khách đặt phòng 3 đêm từ Thứ Năm (15/10) đến Chủ Nhật (18/10):
+      <ul>
+        <li>Đêm Thứ Năm (ngày thường): <b>600.000 VNĐ</b></li>
+        <li>Đêm Thứ Sáu (cuối tuần): <b>850.000 VNĐ</b></li>
+        <li>Đêm Thứ Bảy (cuối tuần): <b>850.000 VNĐ</b></li>
+      </ul>
+      &rarr; <b>Tổng tiền phòng tự động tính:</b> 600.000 + 850.000 + 850.000 = <b>2.300.000 VNĐ</b>. Tiền cọc 50% = <b>1.150.000 VNĐ</b>.
+    </li>
+    <li><b>Tình huống hủy phòng:</b>
+      <ul>
+        <li><i>Hủy trước 48 giờ:</i> Khách nhận lại 100% tiền cọc (1.150.000 VNĐ).</li>
+        <li><i>Hủy sát giờ (&lt; 48 giờ):</i> Hệ thống trừ phí phạt 1 đêm đầu tiên (600.000 VNĐ), hoàn lại số tiền chênh lệch (550.000 VNĐ).</li>
+      </ul>
+    </li>
+  </ul>
+
+  <div class="page-break"></div>
+
+  <!-- ================= 4. SƠ ĐỒ USE CASE CÓ HÌNH ================= -->
+  <h1>4. SƠ ĐỒ USE CASE & ĐẶC TẢ CA SỬ DỤNG</h1>
+  <p>Sơ đồ bao gồm 2 nhóm vai trò người dùng chính: <b>Khách hàng (Guest)</b> và <b>Chủ Homestay / Lễ tân (Host/Admin - [Authorize])</b> cùng 2 tác nhân ngoài là Cổng QR Ngân hàng và Dịch vụ AI SmartPaste.</p>
+
+  <div class="img-box">
+    <img src="diagrams/images/use_case_diagram.png" width="620" />
+    <span class="img-caption">Hình 4.1: Sơ đồ Use Case tổng thể — Dự án Homestay Huế (ECO2415)</span>
+  </div>
+
+  <p><b>Bảng danh sách 18 Use Cases và phân quyền tác nhân:</b></p>
+  <table>
+    <thead>
+      <tr>
+        <th style="width: 15%;">Mã UC</th>
+        <th style="width: 35%;">Tên Ca Sử Dụng</th>
+        <th style="width: 20%;">Tác nhân chính</th>
+        <th style="width: 30%;">Mô tả nghiệp vụ</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>UC01</td><td>Tìm kiếm phòng theo ngày & khách</td><td>Khách du lịch</td><td>Lọc buồng phòng khả dụng không bị lấn lịch.</td></tr>
+      <tr><td>UC02</td><td>Xem chi tiết phòng & giá từng đêm</td><td>Khách du lịch</td><td>Xem hình ảnh, tiện nghi và bảng giá ngày thường/cuối tuần.</td></tr>
+      <tr><td>UC03</td><td>Chọn phòng vào Giỏ tạm</td><td>Khách du lịch</td><td>Lưu tạm vào Scoped BookingCartState (K1.4).</td></tr>
+      <tr><td>UC04</td><td>Đặt phòng trực tuyến</td><td>Khách du lịch</td><td>Thực hiện đặt phòng, hỗ trợ đặt nhiều phòng.</td></tr>
+      <tr><td>UC05</td><td>Kiểm tra chống Overbooking</td><td>Hệ thống (&lt;&lt;include&gt;&gt;)</td><td>Thực thi Luật nghiệp vụ 1 tại CoreBusiness.</td></tr>
+      <tr><td>UC06</td><td>Tự động tính tiền từng đêm</td><td>Hệ thống (&lt;&lt;include&gt;&gt;)</td><td>Thực thi Luật nghiệp vụ 2 tại CoreBusiness.</td></tr>
+      <tr><td>UC07</td><td>Thanh toán cọc 50% qua VietQR</td><td>Khách & Ngân hàng</td><td>Quét mã QR chuyển khoản tiền cọc tự động.</td></tr>
+      <tr><td>UC08</td><td>Xem lịch sử đơn đặt phòng</td><td>Khách du lịch</td><td>Tra cứu theo mã đặt phòng #BK01.</td></tr>
+      <tr><td>UC09</td><td>Yêu cầu hủy đặt phòng</td><td>Khách du lịch</td><td>Thực thi quy tắc phạt hủy cọc 48h (Luật 2).</td></tr>
+      <tr><td>UC10</td><td>Đăng nhập / Đăng xuất</td><td>Chủ nhà / Lễ tân</td><td>Xác thực Cookie Auth, phân quyền [Authorize(Roles="Admin")].</td></tr>
+      <tr><td>UC11</td><td>Quản lý buồng phòng</td><td>Chủ nhà / Lễ tân</td><td>CRUD Loại phòng (RoomType) và Phòng (Room).</td></tr>
+      <tr><td>UC12</td><td>Thiết lập bảng giá linh hoạt</td><td>Chủ nhà / Lễ tân</td><td>CRUD RatePlan theo thứ trong tuần, cuối tuần, lễ.</td></tr>
+      <tr><td>UC13</td><td>Xử lý Check-in đón khách</td><td>Chủ nhà / Lễ tân</td><td>Chuyển trạng thái phòng sang OCCUPIED (14h00).</td></tr>
+      <tr><td>UC14</td><td>Xử lý Check-out trả phòng</td><td>Chủ nhà / Lễ tân</td><td>Chuyển trạng thái phòng sang CLEANING (12h00).</td></tr>
+      <tr><td>UC15</td><td>Quản lý danh sách đơn & cọc</td><td>Chủ nhà / Lễ tân</td><td>Theo dõi đơn chờ cọc, đã xác nhận, hủy.</td></tr>
+      <tr><td>UC16</td><td>Báo cáo công suất phòng</td><td>Chủ nhà / Lễ tân</td><td>Thống kê tỷ lệ lấp đầy phòng theo tháng.</td></tr>
+      <tr><td>UC17</td><td>AI SmartPaste bóc tách tin nhắn</td><td>Chủ nhà / Lễ tân</td><td>Dán tin nhắn Zalo, AI tự trích xuất thông tin (Mục 10).</td></tr>
+      <tr><td>UC18</td><td>Xác nhận dữ liệu do AI gợi ý</td><td>Chủ nhà / Lễ tân</td><td>Lễ tân duyệt trước khi ghi CSDL (Mục 10 & K4.3).</td></tr>
+    </tbody>
+  </table>
+
+  <div class="page-break"></div>
+
+  <!-- ================= 5. SƠ ĐỒ LỚP CÓ HÌNH ================= -->
+  <h1>5. SƠ ĐỒ LỚP (CLASS DIAGRAM) & KIẾN TRÚC 4 TẦNG CLEAN ARCHITECTURE</h1>
+  <p>Sơ đồ lớp phân tách thành 4 package độc lập tuân thủ nghiêm ngặt nguyên tắc phụ thuộc một chiều (Dependency Rule - K1.1, K1.2):</p>
+
+  <div class="img-box">
+    <img src="diagrams/images/class_diagram.png" width="650" />
+    <span class="img-caption">Hình 5.1: Sơ đồ Lớp (Class Diagram) 4 tầng Clean Architecture — Dự án Homestay Huế (K1.1, K1.2)</span>
+  </div>
+
+  <h3>5.1. Bảng từ điển dữ liệu 6 thực thể (Domain Model)</h3>
+  <table>
+    <thead>
+      <tr>
+        <th style="width: 20%;">Tên Thực Thể</th>
+        <th style="width: 25%;">Thuộc tính cốt lõi</th>
+        <th style="width: 20%;">Kiểu dữ liệu</th>
+        <th style="width: 35%;">Mô tả & Ràng buộc</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><b>RoomType</b></td>
+        <td>Id, TypeName, Description, MaxGuests, BasePrice</td>
+        <td>int, string, string, int, decimal</td>
+        <td>Khóa chính Id. Đại diện các loại phòng (Bungalow, Nhà rường, Deluxe).</td>
+      </tr>
+      <tr>
+        <td><b>Room</b></td>
+        <td>Id, RoomNumber, RoomTypeId, Status, IsActive</td>
+        <td>int, string, int, RoomStatus, bool</td>
+        <td>Khóa ngoại RoomTypeId &rarr; RoomType. Trạng thái buồng phòng (Available, Occupied, Cleaning).</td>
+      </tr>
+      <tr>
+        <td><b>RatePlan</b></td>
+        <td>Id, RoomTypeId, DayOfWeek, Price, IsWeekend</td>
+        <td>int, int, DayOfWeek, decimal, bool</td>
+        <td>Bảng giá linh hoạt theo thứ trong tuần, cuối tuần hoặc phụ thu mùa lễ hội.</td>
+      </tr>
+      <tr>
+        <td><b>Guest</b></td>
+        <td>Id, FullName, Email, PhoneNumber, IdentityCard</td>
+        <td>int, string, string, string, string</td>
+        <td>Thông tin khách hàng đặt phòng (Số điện thoại, CCCD phục vụ tạm trú).</td>
+      </tr>
+      <tr>
+        <td><b>Booking</b><br>(Header)</td>
+        <td>Id, BookingCode, GuestId, CheckInDate, CheckOutDate, TotalAmount, DepositAmount, Status</td>
+        <td>int, string, int, DateTime, DateTime, decimal, decimal, BookingStatus</td>
+        <td>Khóa chính Id, khóa ngoại GuestId. Cặp Header lưu tổng tiền và tiền cọc (K2.1).</td>
+      </tr>
+      <tr>
+        <td><b>BookingNight</b><br>(LineItem)</td>
+        <td>Id, BookingId, RoomId, NightDate, Price</td>
+        <td>int, int, int, DateTime, decimal</td>
+        <td>Khóa ngoại BookingId &rarr; Booking, RoomId &rarr; Room. Cặp LineItem lưu chi tiết từng đêm (K2.1).</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="page-break"></div>
+
+  <!-- ================= 6. SƠ ĐỒ TUẦN TỰ CÓ HÌNH ================= -->
+  <h1>6. CÁC SƠ ĐỒ TUẦN TỰ (SEQUENCE DIAGRAMS)</h1>
+
+  <h3>6.1. Luồng giao dịch chính: Đặt phòng End-to-End & Transaction Header-Line</h3>
+  <p>Sơ đồ chứng minh rõ các tiêu chí: <b>K2.2</b> (Header-Line trong 1 Transaction), <b>K2.3</b> (Tham số hóa SQL), <b>K1.3</b> (Kiểm tra 2 luật nghiệp vụ ở CoreBusiness), <b>K1.4</b> (Lấy dữ liệu từ Scoped State):</p>
+
+  <div class="img-box">
+    <img src="diagrams/images/sequence_booking.png" width="640" />
+    <span class="img-caption">Hình 6.1: Sơ đồ Tuần tự Luồng giao dịch chính Đặt phòng End-to-End & Transaction Header-Line (K2.2, K2.4)</span>
+  </div>
+
+  <p><b>Quy trình xử lý tuần tự:</b></p>
+  <ol>
+    <li><b>Tiếp nhận yêu cầu:</b> Khách hàng nhập form tại <code>CheckoutBookingPage.razor</code>, gọi Scoped <code>BookingCartState</code> lấy thông tin phòng và khoảng ngày.</li>
+    <li><b>Kiểm tra Luật 1:</b> <code>CreateBookingUseCase</code> truy vấn các đêm đã bị chiếm qua Dapper SQL tham số hóa (K2.3), gọi <code>OverbookingRule.ValidateNoOverlap()</code>. Nếu trùng ném lỗi thân thiện (K3.3).</li>
+    <li><b>Thực thi Luật 2:</b> Gọi <code>PricingAndCancellationRule.CalculateStayTotal()</code> duyệt từng đêm để tính tổng tiền và tiền cọc 50%.</li>
+    <li><b>Ghi 1 Transaction (K2.2):</b> <code>SqlBookingRepository</code> mở <code>BeginTransaction()</code>, INSERT Header <code>Booking</code>, loop INSERT LineItems <code>BookingNight</code> và gọi <code>Commit()</code>.</li>
+  </ol>
+
+  <h3>6.2. Mở rộng AI: Trợ lý AI SmartPaste bóc tách tin nhắn Zalo (Chuẩn Mục 10)</h3>
+  <p>Sơ đồ chứng minh rõ: <b>Mục 10 Barem & K4.3</b> (IChatClient trong UseCase riêng; xử lý fallback; AI chỉ gợi ý; lễ tân bấm xác nhận trên EditForm trước khi lưu CSDL):</p>
+
+  <div class="img-box">
+    <img src="diagrams/images/sequence_ai_smartpaste.png" width="630" />
+    <span class="img-caption">Hình 6.2: Sơ đồ Tuần tự Mở rộng AI SmartPaste bóc tách tin nhắn Zalo chuẩn Mục 10 Barem (K4.3)</span>
+  </div>
+
+  <div class="page-break"></div>
+
+  <!-- ================= 7. SƠ ĐỒ HOẠT ĐỘNG & TRẠNG THÁI CÓ HÌNH ================= -->
+  <h1>7. SƠ ĐỒ HOẠT ĐỘNG & SƠ ĐỒ CHUYỂN TRẠNG THÁI</h1>
+
+  <h3>7.1. Sơ đồ Hoạt động (Activity Diagram)</h3>
+  <p>Mô tả luồng người dùng tìm phòng, rẽ nhánh kiểm tra phòng trống theo khoảng ngày, tính tiền động ngày thường/cuối tuần và xử lý ngoại lệ thân thiện (K3.3):</p>
+
+  <div class="img-box">
+    <img src="diagrams/images/activity_diagram.png" width="580" />
+    <span class="img-caption">Hình 7.1: Sơ đồ Hoạt động quy trình Đặt phòng & Thực thi 2 Luật nghiệp vụ (K1.3, K3.3)</span>
+  </div>
+
+  <h3>7.2. Sơ đồ Chuyển trạng thái (State Machine Diagram)</h3>
+  <p>Minh họa vòng đời của Đơn đặt phòng (Booking) kết hợp kiểm tra điều kiện phạt hủy phòng 48 giờ (Luật 2) và vòng đời buồng phòng (Room):</p>
+
+  <div class="img-box">
+    <img src="diagrams/images/state_machine_diagram.png" width="620" />
+    <span class="img-caption">Hình 7.2: Sơ đồ Chuyển trạng thái Đơn đặt phòng và Buồng phòng — Dự án Homestay Huế</span>
+  </div>
+
+  <div class="page-break"></div>
+
+  <!-- ================= 8. CẨM NANG VẤN ĐÁP BẢO VỆ ================= -->
+  <h1>8. CẨM NANG VẤN ĐÁP BẢO VỆ ĐẠT ĐIỂM TỐI ĐA (TIÊU CHÍ K5.2)</h1>
+  <p>Khi Thầy/Cô trong Hội đồng chấm thi đặt câu hỏi kiểm tra độ hiểu sâu của từng thành viên, sinh viên tự tin trả lời theo các luận điểm cốt lõi sau:</p>
+
+  <h3>Câu hỏi 1: Nhóm hãy chỉ ra chính xác dòng code cài đặt 2 luật nghiệp vụ và demo ca vi phạm bị chặn? (Tiêu chí K1.3, K5.2)</h3>
+  <ul>
+    <li><b>Trả lời vị trí cài đặt:</b> <i>"Thưa Thầy/Cô, theo đúng nguyên tắc Clean Architecture, 2 luật nghiệp vụ của nhóm em tuyệt đối không nằm trong file .razor mà được cài đặt độc lập tại tầng CoreBusiness:
+      <ul>
+        <li><b>Luật 1 (Chống trùng phòng):</b> Cài đặt tại lớp <code>OverbookingRule.cs</code> trong CoreBusiness. Sử dụng bảng <code>BookingNight</code> để truy vấn các đêm đã bị chiếm; nếu phát hiện đêm yêu cầu trùng với đêm đã có khách, hệ thống ném ngoại lệ <code>OverbookingConflictException</code>. Đồng thời thuật toán đảm bảo khách cũ trả phòng ngày D (12h) và khách mới nhận ngày D (14h) hoàn toàn hợp lệ.</li>
+        <li><b>Luật 2 (Tính giá & phạt hủy 48h):</b> Cài đặt tại lớp <code>PricingAndCancellationRule.cs</code> trong CoreBusiness. Khi tính tiền, duyệt qua từng đêm để cộng giá ngày thường vs cuối tuần. Khi hủy, lấy hiệu thời gian giữa thời điểm hủy và giờ Check-in: nếu dưới 48 giờ thì khấu trừ phí phạt đúng 1 đêm đầu tiên."</li>
+      </ul>
+    </i></li>
+    <li><b>Cách demo ca vi phạm:</b> 
+      <ol>
+        <li>Mở phòng P101 đã có khách ở từ 15/10 đến 18/10.</li>
+        <li>Nhập ngày đặt mới từ 17/10 đến 19/10 &rarr; Bấm Đặt phòng &rarr; Hệ thống chặn ngay lập tức và hiển thị thông báo lỗi thân thiện: <i>"Phòng đã kín trong các đêm bạn chọn!"</i> mà không làm sập ứng dụng (K3.3).</li>
+      </ol>
+    </li>
+  </ul>
+
+  <h3>Câu hỏi 2: Giải thích nguyên tắc Dependency Rule trong Clean Architecture của dự án? (Tiêu chí K1.1, K5.2)</h3>
+  <ul>
+    <li><b>Trả lời:</b> <i>"Thưa Thầy/Cô, Dependency Rule quy định rằng: <b>Mọi phụ thuộc mã nguồn chỉ được phép hướng vào trong, tầng bên trong không bao giờ được biết đến tầng bên ngoài</b>:
+      <ul>
+        <li>Tầng <code>CoreBusiness</code> nằm ở lõi trong cùng, không tham chiếu bất kỳ project nào (.csproj không có ProjectReference), chứa thuần túy POCO Entity và Luật nghiệp vụ.</li>
+        <li>Tầng <code>UseCases</code> chỉ tham chiếu duy nhất <code>CoreBusiness</code>. Tầng này định nghĩa các Interface trừu tượng (như <code>IRoomRepository</code>) chứ không phụ thuộc vào SQL Server hay Dapper.</li>
+        <li>Tầng <code>Plugins</code> và <code>WebApp</code> nằm ở vòng ngoài cùng, phụ thuộc ngược vào <code>UseCases</code> (Dependency Inversion). Tại <code>Program.cs</code> (Composition Root), ta mới tiến hành cấu hình Dependency Injection ghép nối triển khai cụ thể."</li>
+      </ul>
+    </i></li>
+  </ul>
+
+  <h3>Câu hỏi 3: Vì sao nhóm tách riêng bảng BookingNight thay vì chỉ lưu 2 cột CheckIn - CheckOut trong bảng Booking?</h3>
+  <ul>
+    <li><b>Trả lời:</b> <i>"Dạ thưa Thầy/Cô, đây là điểm sáng kỹ thuật quan trọng nhất của đồ án:
+      <ol>
+        <li><b>Chống trùng phòng tuyệt đối và truy vấn siêu tốc:</b> Khi tách từng đêm thành 1 bản ghi riêng trong <code>BookingNight</code>, câu lệnh SQL kiểm tra phòng trống chỉ cần kiểm tra sự tồn tại của các đêm. Tốc độ truy vấn dưới 20ms, tránh được các lỗi so sánh khoảng ngày phức tạp.</li>
+        <li><b>Giải quyết trọn vẹn bài toán giá linh hoạt (Dynamic Pricing):</b> Giá homestay tại Huế biến động mạnh giữa ngày thường (600k) và cuối tuần (850k) hay dịp Festival. Lưu riêng từng đêm giúp lưu vết chính xác giá áp dụng cho từng đêm cụ thể mà không bị sai lệch số liệu khi chủ nhà thay đổi bảng giá trong tương lai."</li>
+      </ol>
+    </i></li>
+  </ul>
+
+  <div style="margin-top: 30px; text-align: center; border-top: 1px dashed #94a3b8; padding-top: 20px; font-style: italic; color: #64748b;">
+    --- HẾT TOÀN BỘ TÀI LIỆU THIẾT KẾ HỆ THỐNG UML DỰ ÁN HOMESTAY HUẾ ---
+  </div>
+
+</div>
+</body>
+</html>

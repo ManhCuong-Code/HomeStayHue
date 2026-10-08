@@ -1,0 +1,32 @@
+@rendermode InteractiveServer
+@implements IDisposable
+@inject IShoppingCartStateStore shoppingCartStateStore
+
+<div>
+    Cart:&nbsp; @lineItemCount
+</div>
+
+@code {
+    private int lineItemCount = 0;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            shoppingCartStateStore.AddStateChangeListeners(HandlHomeStayHuepingCartStateChange);
+            lineItemCount = await shoppingCartStateStore.GetItemsCount();
+            StateHasChanged();
+        }
+    }
+
+    private async void HandlHomeStayHuepingCartStateChange()
+    {
+        lineItemCount = await shoppingCartStateStore.GetItemsCount();
+        StateHasChanged();
+    }
+
+    public void Dispose()
+    {
+        shoppingCartStateStore.RemoveStateChangeListeners(HandlHomeStayHuepingCartStateChange);
+    }
+}

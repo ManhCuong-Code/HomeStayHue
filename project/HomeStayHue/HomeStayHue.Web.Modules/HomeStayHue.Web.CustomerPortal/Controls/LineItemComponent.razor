@@ -1,0 +1,55 @@
+@using HomeStayHue.UseCases.ShoppingCartScreen.Interfaces
+
+@inject IDeleteProductUseCase deleteProductUseCase
+@inject IUpdateQuantityUseCase updateQuantityUseCase
+
+@if (LineItem != null && LineItem.Product != null)
+{
+    <li class="row align-items-center mb-3 p-2 border rounded">
+        <div class="col-3 text-center">
+            <img src="@LineItem.Product.ImageLink" alt="@LineItem.Product.Name" style="max-height: 90px; object-fit: contain;" />
+        </div>
+        <div class="col-6">
+            <h6 class="fw-bold">@LineItem.Product.Name</h6>
+            <div class="d-flex align-items-center gap-2 mt-2">
+                <span>Quantity:</span>
+                <input type="number" min="0" class="form-control form-control-sm" style="width: 80px;" value="@LineItem.Quantity" @onchange="HandleQuantityChange" />
+            </div>
+            <div class="mt-1 text-muted">
+                Price:&nbsp;@LineItem.Product.Price.ToString("c")
+            </div>
+        </div>
+        <div class="col-3 text-end">
+            <button class="btn btn-outline-danger btn-sm" @onclick="@(() => DeleteProduct(LineItem.ProductId))">Delete</button>
+        </div>
+    </li>
+}
+
+@code {
+    [Parameter]
+    public OrderLineItem? LineItem { get; set; }
+
+    [Parameter]
+    public EventCallback<Order> OnDeleteProduct { get; set; }
+
+    [Parameter]
+    public EventCallback<Order> OnUpdateQuantity { get; set; }
+
+    async Task HandleQuantityChange(ChangeEventArgs e)
+    {
+        if (e.Value == null || string.IsNullOrWhiteSpace(e.Value.ToString())) return;
+
+        if (int.TryParse(e.Value.ToString(), out int qty))
+        {
+            if (qty < 0) return;
+            var order = await updateQuantityUseCase.Execute(LineItem!.ProductId, qty);
+            await OnUpdateQuantity.InvokeAsync(order);
+        }
+    }
+
+    async Task DeleteProduct(int productId)
+    {
+        var order = await deleteProductUseCase.Execute(productId);
+        await OnDeleteProduct.InvokeAsync(order);
+    }
+}

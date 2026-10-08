@@ -1,0 +1,79 @@
+@page "/placeorder"
+@rendermode InteractiveServer
+
+@inject IViewShoppingCartUseCase viewShoppingCartUseCase
+@inject IPlaceOrderUseCase placeOrderUseCase
+@inject NavigationManager navigationManager
+
+<h3 class="mb-4 fw-bold">Checkout - Shipping Details</h3>
+
+@if (order != null)
+{
+    <div class="row">
+        <div class="col-md-7">
+            <div class="card p-4 shadow-sm">
+                <h5 class="card-title fw-bold mb-3">Customer Information</h5>
+                @if (isError)
+                {
+                    <div class="alert alert-danger">Please fill in all required customer details!</div>
+                }
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">Full Name:</label>
+                    <input type="text" class="form-control" @bind="order.CustomerName" placeholder="Nguyen Van A" />
+                </div>
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">Address:</label>
+                    <input type="text" class="form-control" @bind="order.CustomerAddress" placeholder="123 Duong Le Loi" />
+                </div>
+                <div class="row mb-3">
+                    <div class="col">
+                        <label class="form-label fw-semibold">City:</label>
+                        <input type="text" class="form-control" @bind="order.CustomerCity" placeholder="Da Nang" />
+                    </div>
+                    <div class="col">
+                        <label class="form-label fw-semibold">State / Province:</label>
+                        <input type="text" class="form-control" @bind="order.CustomerStateProvince" placeholder="Hai Chau" />
+                    </div>
+                </div>
+                <div class="mb-4">
+                    <label class="form-label fw-semibold">Country:</label>
+                    <input type="text" class="form-control" @bind="order.CustomerCountry" placeholder="Vietnam" />
+                </div>
+                <button class="btn btn-success btn-lg w-100 fw-bold" @onclick="HandlePlaceOrder">Confirm and Place Order</button>
+            </div>
+        </div>
+        <div class="col-md-5">
+            <OrderSummaryComponent Order="order" HidePlaceOrderButton="true"></OrderSummaryComponent>
+        </div>
+    </div>
+}
+
+@code {
+    private Order? order;
+    private bool isError = false;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            order = await viewShoppingCartUseCase.Execute();
+            StateHasChanged();
+        }
+    }
+
+    private async Task HandlePlaceOrder()
+    {
+        if (order == null || string.IsNullOrWhiteSpace(order.CustomerName) || string.IsNullOrWhiteSpace(order.CustomerAddress))
+        {
+            isError = true;
+            return;
+        }
+
+        isError = false;
+        string? orderUniqueId = await placeOrderUseCase.Execute(order);
+        if (!string.IsNullOrEmpty(orderUniqueId))
+        {
+            navigationManager.NavigateTo($"/orderconfirm/{orderUniqueId}");
+        }
+    }
+}
